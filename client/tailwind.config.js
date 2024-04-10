@@ -18,12 +18,13 @@ module.exports = {
           main: '#B5A26D',
         },
         text: {
-          main: '3A1500',
+          main: '#3A1500',
         },
       },
       screens: {
         '6xl': '1150px',
       },
+      size: {},
     },
   },
   plugins: [],
