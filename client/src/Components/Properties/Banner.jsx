@@ -11,7 +11,7 @@ const Banner = ({ img, heading }) => {
       }}
     >
       <h1
-        className='bottom-[10%] left-[50%] absolute'
+        className='bottom-[10%] left-[50%] absolute text-center'
         style={{ transform: 'translate(-50%,0%)' }}
       >
         {heading || 'Banner Heading'}
