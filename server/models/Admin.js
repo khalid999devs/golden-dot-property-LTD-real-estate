@@ -11,12 +11,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  Admin.associate = (models) => {
-    Admin.hasMany(models.notifications, {
-      foriegnKey: 'adminId',
-      onDelete: 'CASCADE',
-    });
-  };
-
   return Admin;
 };

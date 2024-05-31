@@ -1,4 +1,4 @@
-const { clients, clientspaces } = require('../models');
+const { clients, clientproperties } = require('../models');
 const {
   BadRequestError,
   UnauthenticatedError,
@@ -11,11 +11,14 @@ const { attachTokenToResponse } = require('../utils/createToken');
 const deleteFile = require('../utils/deleteFile');
 const mailer = require('../utils/sendMail');
 const sendSMS = require('../utils/sendSMS');
-const { Op } = require('sequelize');
 
+//active now
 const registration = async (req, res) => {
-  const newPar = await clients.create(req.user);
-  mailer({ client: newPar }, 'par').catch((err) => {
+  const newClient = await clients.create(req.user);
+  console.log(newClient);
+  await clientproperties.create({ ...req.property, clientId: newClient.id });
+
+  mailer({ client: newClient }, 'newClient').catch((err) => {
     // console.log(err)
   });
 
@@ -253,28 +256,22 @@ const resetPassVerify = async (req, res) => {
   }
 };
 
+//active now
 const getAllClients = async (req, res) => {
   const { skip, rowNum } = req.body;
   if (skip === '' || skip === null || skip === undefined || !rowNum)
     throw new BadRequestError('skip or rows field must not be empty');
 
-  // let result;
-  //   [result] = await sequelize.query(
-  //     `SELECT par.id,par.qrCode,par.fullName,par.fb,par.institute,par.className,par.address,par.image,par.email,par.phone,par.userName, pe.eventInfo,pe.teamName,pe.paidEvent,pe.fee,pe.transactionID,pe.SubLinks,pe.SubNames,pe.roll_no FROM clients as par LEFT JOIN parevents as pe ON par.id=pe.parId LIMIT ${skip},${rowNum};`
-  //   );
-
   result = await clients.findAll({
     include: {
-      model: clientspaces,
+      model: clientproperties,
+      as: 'properties',
+      attributes: ['heading', 'value'],
     },
-    attributes: { exclude: ['password'] },
+    attributes: { exclude: ['password', 'otp', 'otpCount', 'otpTime'] },
     offset: Number(skip),
     limit: Number(rowNum),
   });
-
-  // [result] = await sequelize.query(
-  //   `SELECT par.id,par.qrCode,par.fullName,par.fb,par.institute,par.className,par.address,par.image,par.email,par.phone,par.userName, pe.eventInfo,pe.teamName,pe.paidEvent,pe.fee,pe.transactionID,pe.SubLinks,pe.SubNames,pe.roll_no FROM clients as par LEFT JOIN parevents as pe ON par.id=pe.parId WHERE JSON_EXTRACT(pe.eventInfo, "$.${mode}") =0 or JSON_EXTRACT(pe.eventInfo, "$.${mode}") =1 LIMIT ${skip},${rowNum};`
-  // );
 
   res.json({ succeed: true, result: result });
 };
@@ -289,13 +286,14 @@ const getClientOnId = async (req, res) => {
       msg: 'access denied',
     });
   }
+
   let clientUser;
   clientUser = await clients.findOne({
     where: { id: id },
-    attributes: { exclude: ['password'] },
+    attributes: { exclude: ['password', 'otp', 'otpCount', 'otpTime'] },
     include: {
-      model: ParEvents,
-      as: 'ParEvent',
+      model: clientproperties,
+      as: 'properties',
     },
   });
 
@@ -303,36 +301,13 @@ const getClientOnId = async (req, res) => {
     succeed: true,
     mode: mode,
     result: clientUser,
-    msg: 'participant found',
+    msg: 'Client found',
   });
 
   res.json({
     succeed: false,
     msg: 'something went wrong finding the client',
   });
-};
-
-const profileView = async (req, res) => {
-  const userName = req.params.username;
-  let targetClient = undefined;
-  targetClient = await clients.findOne({
-    attributes: ['fullName', 'userName', 'institute', 'image'],
-    where: { userName: userName },
-  });
-
-  if (!targetClient) {
-    res.json({
-      succeed: false,
-      msg: 'Could not find anyone',
-      result: {},
-    });
-  } else {
-    res.json({
-      succeed: true,
-      msg: 'Successfully found',
-      result: targetClient,
-    });
-  }
 };
 
 module.exports = {
@@ -345,5 +320,4 @@ module.exports = {
   resetPassVerify,
   getAllClients,
   getClientOnId,
-  profileView,
 };

@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
-    institute: {
+    address: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     message: {
       type: DataTypes.TEXT,
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: 0,
     },
-  })
+  });
 
-  return Contact
-}
+  return Contact;
+};

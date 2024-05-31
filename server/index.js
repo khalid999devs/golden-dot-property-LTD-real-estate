@@ -33,10 +33,12 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 const adminRouter = require('./routers/admin');
 const contactRouter = require('./routers/contact');
 const clientRouter = require('./routers/clients');
+const propertiesRouter = require('./routers/properties');
 
 app.use('/api/admin', adminRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/client', clientRouter);
+app.use('/api/property', propertiesRouter);
 
 //notfound and errors
 const errorHandlerMiddleWare = require('./middlewares/errorHandler');
@@ -51,7 +53,7 @@ db.sequelize
   .sync()
   .then((_) => {
     console.log(`database connected`);
-    server.listen(PORT, () => {
+    app.listen(PORT, () => {
       console.log(`server is running on port ${PORT}...`);
     });
   })

@@ -5,7 +5,7 @@ const { BadRequestError } = require('../errors');
 //file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const validFields = /clients|spaces|resources|discussions/;
+    const validFields = /clients|bigimg|thumbnail|banner/;
     if (!file.fieldname) {
       return cb(null, true);
     }
@@ -14,29 +14,20 @@ const storage = multer.diskStorage({
     if (!isFieldValid) {
       cb(new Error(`Field name didn't match`));
     }
-    let mathRand = Math.ceil(Math.random() * 10).toString();
+
     let destName = resolve(__dirname, `../uploads/${file.fieldname}`);
 
-    if (file.fieldname === 'resources') {
-      destName = resolve(
-        __dirname,
-        `../uploads/${file.fieldname}/${req.body.Title.split(' ').join('_')}`
-      );
-    } else if (file.fieldname === 'discussions') {
-      nameObjs = JSON.parse(req.body.nameObjFiles);
-      const discStr =
-        req.user?.userName +
-        '_' +
-        req.body.text?.slice(0, 6) +
-        '@' +
-        req.body.time;
-      req.body.destRootRange = 5;
+    const headingStr = req.body.heading.split(' ').join('-');
 
+    if (file.fieldname === 'bigimg' || file.fieldname === 'thumbnail') {
       destName = resolve(
         __dirname,
-        `../uploads/spaces/${req.params.spaceId}/${file.fieldname}/${discStr}${
-          nameObjs[file.originalname].dist || 'fd'
-        }`
+        `../uploads/properties/${headingStr}/gallery/${file.fieldname}`
+      );
+    } else if (file.fieldname === 'banner') {
+      destName = resolve(
+        __dirname,
+        `../uploads/properties/${headingStr}/${file.fieldname}`
       );
     }
 
@@ -50,27 +41,19 @@ const storage = multer.diskStorage({
 
     let pathName = `uploads/${file.fieldname}`;
 
-    if (file.fieldname === 'resources') {
-      pathName = `uploads/${file.fieldname}/${req.body.Title.split(' ').join(
-        '_'
-      )}`;
-    } else if (file.fieldname === 'discussions') {
-      const discStr =
-        req.user?.userName +
-        '_' +
-        req.body.text?.slice(0, 6) +
-        '@' +
-        req.body.time;
-
-      pathName = `uploads/spaces/${req.params.spaceId}/${
-        file.fieldname
-      }/${discStr}${nameObjs[file.originalname].dist || 'fd'}`;
+    if (file.fieldname === 'bigimg' || file.fieldname === 'thumbnail') {
+      pathName = `uploads/properties/${headingStr}/gallery/${file.fieldname}`;
+    } else if (file.fieldname === 'banner') {
+      pathName = `uploads/properties/${headingStr}/${file.fieldname}`;
     }
     cb(null, pathName);
   },
+
   filename: (req, file, cb) => {
     let type = file.originalname.split('.');
     let fileExt = type[type.length - 1];
+    const headingStr = req.body.heading.split(' ').join('-');
+    req.propertyValue = headingStr;
 
     let fileName = '';
     if (file.fieldname === 'clients') {
@@ -85,13 +68,10 @@ const storage = multer.diskStorage({
       } else {
         cb(new BadRequestError('fullName should be provided'));
       }
-    } else if (file.fieldname === 'spaces') {
-      fileName =
-        req.body.title.split(' ').join('').slice(0, 6) + `@${Date.now()}`;
-    } else if (file.fieldname === 'resources') {
-      fileName = req.body.Title.split(' ').join('_') + `_${Date.now()}`;
-    } else if (file.fieldname === 'discussions') {
-      fileName = type.slice(0, -1).join('.');
+    } else if (file.fieldname === 'bigimg' || file.fieldname === 'thumbnail') {
+      fileName = headingStr + '_' + file.fieldname + `@${Date.now()}`;
+    } else if (file.fieldname === 'banner') {
+      fileName = headingStr + '_' + file.fieldname + `@${Date.now()}`;
     } else {
       fileName = file.fieldname + `-${Date.now()}`;
     }
@@ -101,18 +81,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 500 * 1024 * 1024 },
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    // const fileTypes = /jpeg|jpg|png|pdf|ppt|pptx|txt|doc|docs/;
+    const fileTypes = /jpeg|jpg|png|pdf/;
 
-    // const mimeType = fileTypes.test(file.mimetype);
+    const mimeType = fileTypes.test(file.mimetype);
 
-    // if (mimeType) {
-    //   return cb(null, true);
-    // } else {
-    //   cb(new Error('only jpg,png,jpeg,pdf,ppt,pptxis allowed!'));
-    // }
-    return cb(null, true);
+    if (mimeType) {
+      return cb(null, true);
+    } else {
+      cb(new Error('only jpg,png,jpeg,pdf is allowed!'));
+    }
 
     cb(new Error('there was an unknown error'));
   },

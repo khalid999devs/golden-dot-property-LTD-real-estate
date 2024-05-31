@@ -39,26 +39,29 @@ const passwordValidate = async (req, res, next) => {
 };
 
 const clientRegValidate = async (req, res, next) => {
-  const { fullName, email, password } = req.body;
-  if (fullName && email && password) {
-    const isEmailThere = await clients.findOne({
-      where: { email: email },
-    });
-    if (isEmailThere) {
-      throw new UnauthenticatedError(`Already registered with ${email}`);
-    }
+  const { fullName, email, phone, password, address, property } = req.body;
+  if (fullName && (email || phone) && property.heading && property.value) {
+    // const isEmailThere = await clients.findOne({
+    //   where: { email: email },
+    // });
+    // if (isEmailThere) {
+    //   throw new UnauthenticatedError(`Already registered with ${email}`);
+    // }
 
-    const hashedPass = hashSync(password, hashSalt);
+    // const hashedPass = hashSync(password, hashSalt);
     const username = fullName.split(' ')[0].toLowerCase() + `@${Date.now()}`;
 
     const data = {
       fullName: fullName.trim(),
       email,
+      phone: phone.trim(),
       userName: username,
-      password: hashedPass,
+      // password: hashedPass,
+      address,
     };
-
     req.user = data;
+    req.property = property;
+
     next();
   } else {
     throw new BadRequestError('Input fields should not be empty');
