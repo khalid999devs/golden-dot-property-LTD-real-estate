@@ -15,6 +15,10 @@ import LenisGSAP from './LenisGSAP';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import AdminLogin from './Pages/Admin/AdminLogin';
+import Admin from './Pages/Admin/Admin';
+import Dashboard from './Pages/Admin/Dashboard';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const router = createBrowserRouter([
@@ -42,6 +46,22 @@ const router = createBrowserRouter([
       {
         path: 'about',
         element: <About />,
+      },
+    ],
+  },
+  {
+    path: '/admin-login',
+    element: <AdminLogin />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/admin',
+    element: <Admin />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
       },
     ],
   },
