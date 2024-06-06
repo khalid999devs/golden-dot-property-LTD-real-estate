@@ -18,6 +18,11 @@ import 'slick-carousel/slick/slick-theme.css';
 import AdminLogin from './Pages/Admin/AdminLogin';
 import Admin from './Pages/Admin/Admin';
 import Dashboard from './Pages/Admin/Dashboard';
+import Bookings from './Pages/Admin/Bookings.jsx';
+import ContactMsg from './Pages/Admin/ContactMsg.jsx';
+import AdminProperty from './Pages/Admin/AdminProperty.jsx';
+import AdminSmsMail from './Pages/Admin/AdminSmsMail.jsx';
+import AdSingleProperty from './Pages/Admin/AdSingleProperty.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,6 +67,26 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: 'bookings',
+        element: <Bookings />,
+      },
+      {
+        path: 'properties',
+        element: <AdminProperty />,
+      },
+      {
+        path: 'properties/:id',
+        element: <AdSingleProperty />,
+      },
+      {
+        path: 'sms-mail',
+        element: <AdminSmsMail />,
+      },
+      {
+        path: 'contacts',
+        element: <ContactMsg />,
       },
     ],
   },
