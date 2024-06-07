@@ -1,0 +1,14 @@
+.dashboard-container {
+  grid-template-areas:
+    'd1'
+    'd2'
+    'd3';
+}
+
+@media screen and (min-width: 640px) {
+  .dashboard-container {
+    grid-template-areas:
+      'd1 d1'
+      'd2 d3';
+  }
+}

@@ -52,8 +52,8 @@ const ValuedInput = ({
 
       {alert?.msg && (
         <p
-          className={`text-${
-            alert.state === 'error' ? 'red-700' : 'orange-600'
+          className={`${
+            alert.state === 'error' ? 'text-red-700' : 'text-orange-600'
           } text-xs ml-1 -mt-1.5`}
         >
           {alert.msg}

@@ -24,6 +24,8 @@ import AdminProperty from './Pages/Admin/AdminProperty.jsx';
 import AdminSmsMail from './Pages/Admin/AdminSmsMail.jsx';
 import AdSingleProperty from './Pages/Admin/AdSingleProperty.jsx';
 
+import './axios/global.js';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const router = createBrowserRouter([

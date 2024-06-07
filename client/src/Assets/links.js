@@ -3,6 +3,12 @@ import { FiPhone } from 'react-icons/fi';
 import { BiLogoGmail } from 'react-icons/bi';
 import { CgMail } from 'react-icons/cg';
 
+import { FaAddressBook } from 'react-icons/fa6';
+import { MdDashboard } from 'react-icons/md';
+import { BsFillBuildingsFill } from 'react-icons/bs';
+import { RiMailAddFill } from 'react-icons/ri';
+import { GrContact } from 'react-icons/gr';
+
 export const links = [
   {
     name: 'Home',
@@ -15,6 +21,34 @@ export const links = [
   {
     name: 'Properties',
     path: '/properties/all',
+  },
+];
+
+export const adminLinks = [
+  {
+    name: 'Dashboard',
+    path: '',
+    icon: MdDashboard,
+  },
+  {
+    name: 'Bookings',
+    path: 'bookings',
+    icon: FaAddressBook,
+  },
+  {
+    name: 'Properties',
+    path: 'properties',
+    icon: BsFillBuildingsFill,
+  },
+  {
+    name: 'MAIL & SMS',
+    path: 'sms-mail',
+    icon: RiMailAddFill,
+  },
+  {
+    name: 'Contacts',
+    path: 'contacts',
+    icon: GrContact,
   },
 ];
 

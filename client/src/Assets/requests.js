@@ -1,4 +1,4 @@
-const so = 'https://localhost:8000';
+const so = 'http://localhost:8000';
 
 export const reqFileWrapper = (src) => {
   if (!src) return null;
@@ -7,9 +7,9 @@ export const reqFileWrapper = (src) => {
 
 const reqs = {
   // admin
-  ADMIN_LOGIN: '',
+  ADMIN_LOGIN: '/api/admin/login',
   ADMIN_LOGOUT: '',
-  IS_ADMIN_VALID: '',
+  IS_ADMIN_VALID: '/api/admin/auth',
 };
 
 export default reqs;
