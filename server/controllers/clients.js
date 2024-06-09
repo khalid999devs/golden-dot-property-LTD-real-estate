@@ -1,4 +1,5 @@
 const { clients, clientproperties } = require('../models');
+const { Op } = require('sequelize');
 const {
   BadRequestError,
   UnauthenticatedError,
@@ -258,22 +259,35 @@ const resetPassVerify = async (req, res) => {
 
 //active now
 const getAllClients = async (req, res) => {
-  const { skip, rowNum } = req.body;
+  const { skip, rowNum, propertyValue } = req.body;
   if (skip === '' || skip === null || skip === undefined || !rowNum)
     throw new BadRequestError('skip or rows field must not be empty');
+
+  const propertiesWhereCondition =
+    propertyValue !== 'all' && propertyValue ? { value: propertyValue } : {};
 
   result = await clients.findAll({
     include: {
       model: clientproperties,
       as: 'properties',
       attributes: ['heading', 'value'],
+      where: propertiesWhereCondition,
     },
     attributes: { exclude: ['password', 'otp', 'otpCount', 'otpTime'] },
     offset: Number(skip),
     limit: Number(rowNum),
+    order: [['id', 'DESC']],
   });
 
-  res.json({ succeed: true, result: result });
+  const totalClients = await clients.count({
+    include: {
+      model: clientproperties,
+      as: 'properties',
+      where: propertiesWhereCondition,
+    },
+  });
+
+  res.json({ succeed: true, result: result, totalCount: totalClients });
 };
 
 const getClientOnId = async (req, res) => {

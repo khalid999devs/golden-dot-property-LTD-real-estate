@@ -58,6 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     clients.hasMany(models.clientproperties, {
       foriegnKey: 'clientId',
       onDelete: 'CASCADE',
+      as: 'properties',
     });
   };
 

@@ -10,6 +10,10 @@ const reqs = {
   ADMIN_LOGIN: '/api/admin/login',
   ADMIN_LOGOUT: '',
   IS_ADMIN_VALID: '/api/admin/auth',
+
+  GET_ALL_CLIENTS: '/api/client/getAll',
+
+  //clients
 };
 
 export default reqs;

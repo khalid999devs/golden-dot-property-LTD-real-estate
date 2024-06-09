@@ -20,7 +20,6 @@ const Navbar = ({ data }) => {
                 key={key}
                 to={link.path}
                 className={({ isActive, isPending }) => {
-                  console.log(isActive);
                   return `text-2xl transition-all duration-500 cursor-pointer hover:text-primary-light ${
                     isPending ? 'text-primary-main' : ''
                   } ${

@@ -37,7 +37,7 @@ const Admin = () => {
   return (
     <div className='grid grid-cols-[auto,1fr] gap-1'>
       <Navbar data={data} />
-      <div className='overflow-auto p-2'>
+      <div className='overflow-auto px-2'>
         {!loading && fetched ? (
           <Outlet />
         ) : (
