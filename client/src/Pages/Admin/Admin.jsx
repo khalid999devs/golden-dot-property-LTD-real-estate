@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Outlet, redirect, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import reqs from '../../Assets/requests';
-import Loading from '../../Assets/Components/Loading';
+import { ComponentLoading as Loading } from '../../Assets/Components/Loading';
 import Navbar from '../../Components/Admin/Main/Navbar';
 import './admin.css';
 

@@ -36,7 +36,7 @@ const Features = ({ features }) => {
         <div className='text-center'>
           <SubHeaders text={'Features & Amenities'} />
         </div>
-        <div className='flex flex-row flex-wrap items-center justify-center gap-6'>
+        <div className='flex flex-row flex-wrap items-start justify-center gap-6'>
           {features.map((feature, index) => {
             return <FeatureContents key={index} feature={feature} />;
           })}

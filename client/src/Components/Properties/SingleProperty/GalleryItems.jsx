@@ -1,14 +1,18 @@
 import { HiOutlinePlay } from 'react-icons/hi2';
+import { reqFileWrapper } from '../../../Assets/requests';
 
 const GalleryItems = ({ galleryImages, videos, slickSettings, sliderRef }) => {
   return <></>;
 };
 
-export const ImageItem = ({ item }) => {
+export const ImageItem = ({ item, onClick }) => {
   return (
-    <div className='gallery-item !w-[280px] !h-[300px] border border-text-main relative group overflow-hidden cursor-pointer'>
+    <div
+      className='gallery-item !w-[280px] !h-[300px] border border-text-main relative group overflow-hidden cursor-pointer'
+      onClick={onClick}
+    >
       <img
-        src={item.thumbnail}
+        src={reqFileWrapper(item.thumbnail)}
         alt={item.title}
         className='w-full h-full object-cover scale-105 group-hover:scale-100 grayscale-20 transition-all duration-1000'
       />
@@ -24,9 +28,12 @@ export const ImageItem = ({ item }) => {
   );
 };
 
-export const VideoItem = ({ item }) => {
+export const VideoItem = ({ item, onClick }) => {
   return (
-    <div className='gallery-item !w-[280px] !h-[300px] border border-text-main relative group cursor-pointer overflow-hidden'>
+    <div
+      className='gallery-item !w-[280px] !h-[300px] border border-text-main relative group cursor-pointer overflow-hidden'
+      onClick={onClick}
+    >
       <img
         src={item.thumbnail}
         alt={item.title}

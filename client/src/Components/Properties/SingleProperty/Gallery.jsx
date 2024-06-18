@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import Slider from 'react-slick';
 import { LeftArrowButton, RightArrowButton } from '../../Utils/ArrowButtons';
 import { ImageItem, VideoItem } from './GalleryItems';
+import ImageGalleryView from '../../Utils/ImageGalleryView';
+import { reqFileWrapper } from '../../../Assets/requests';
 
 const Gallery = ({ galleryImages, videos }) => {
   const sectionH = useRef();
@@ -11,8 +13,25 @@ const Gallery = ({ galleryImages, videos }) => {
   const timeline = useRef();
   const [wInnerWidth, setwInnerWidth] = useState(window.innerWidth);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const openGallery = (index) => {
+    setCurrentIndex(index);
+    setIsOpen(true);
+  };
+
+  const items = [...galleryImages, ...videos].map((item, index) => ({
+    ...item,
+    original: item.serverImg ? reqFileWrapper(item.url) : item.url,
+    index,
+    thumbnail: item.serverImg ? reqFileWrapper(item.thumbnail) : item.thumbnail,
+    originalTitle: item.title,
+    type: item.thumbnail.includes('youtube') ? 'video' : 'image',
+  }));
+
   const setInnerWidth = () => {
-    setwInnerWidth(window.innerWidth);
+    setwInnerWidth(() => window.innerWidth);
   };
 
   useEffect(() => {
@@ -33,7 +52,7 @@ const Gallery = ({ galleryImages, videos }) => {
       // );
       const totalWidth =
         (galleryImages.length + videos.length) * gallery_items[0].offsetWidth;
-      setIsOverflowing(totalWidth > sec_container.offsetWidth);
+      setIsOverflowing(() => totalWidth > sec_container.offsetWidth);
 
       if (totalWidth > sec_container.offsetWidth) {
         timeline.current = gsap.timeline();
@@ -54,7 +73,7 @@ const Gallery = ({ galleryImages, videos }) => {
         // gsap.to(gallery_items, { margin: 'auto' });
       }
     }
-  }, [sectionH, galleryImages, wInnerWidth, videos]);
+  }, [sectionH, galleryImages, videos, wInnerWidth]);
 
   const slickSettings = {
     swipeToSlide: true,
@@ -64,6 +83,14 @@ const Gallery = ({ galleryImages, videos }) => {
     slidesToScroll: 1,
     variableWidth: true,
     arrows: false,
+  };
+
+  const onImageClick = (index) => {
+    openGallery(index);
+  };
+
+  const onVideoClick = (index) => {
+    openGallery((galleryImages?.length > 0 ? galleryImages.length : 0) + index);
   };
 
   const handlePrevious = () => {
@@ -86,10 +113,22 @@ const Gallery = ({ galleryImages, videos }) => {
               ref={sliderRef}
             >
               {galleryImages.map((item, index) => {
-                return <ImageItem item={item} key={index} />;
+                return (
+                  <ImageItem
+                    item={item}
+                    key={index}
+                    onClick={() => onImageClick(index)}
+                  />
+                );
               })}
               {videos.map((item, index) => {
-                return <VideoItem item={item} key={index} />;
+                return (
+                  <VideoItem
+                    item={item}
+                    key={index}
+                    onClick={() => onVideoClick(index)}
+                  />
+                );
               })}
             </Slider>
             <RightArrowButton onClick={handleNext} />
@@ -97,14 +136,34 @@ const Gallery = ({ galleryImages, videos }) => {
         ) : (
           <div className='grid grid-flow-col justify-center items-center m-auto gap-4 py-10'>
             {galleryImages.map((item, index) => {
-              return <ImageItem item={item} key={index} />;
+              return (
+                <ImageItem
+                  item={item}
+                  key={index}
+                  onClick={() => onImageClick(index)}
+                />
+              );
             })}
             {videos.map((item, index) => {
-              return <VideoItem item={item} key={index} />;
+              return (
+                <VideoItem
+                  item={item}
+                  key={index}
+                  onClick={() => onVideoClick(index)}
+                />
+              );
             })}
           </div>
         )}
       </div>
+
+      {isOpen && (
+        <ImageGalleryView
+          items={items}
+          startIndex={currentIndex}
+          closeGallery={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 };

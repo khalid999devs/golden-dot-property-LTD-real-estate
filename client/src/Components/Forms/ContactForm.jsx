@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import ValuedInput from './ValuedInput';
 import PrimaryButton from './../Buttons/PrimaryButton';
+import Popup from '../Utils/Popup';
+import axios from 'axios';
+import reqs from '../../Assets/requests';
 
 const ContactForm = () => {
   const [contactVals, setContactVals] = useState({
@@ -11,14 +14,48 @@ const ContactForm = () => {
     message: '',
   });
 
+  const [popUp, setPopUp] = useState({
+    text: '',
+    state: false,
+    type: '',
+    loading: false,
+  });
+
+  const handlePopUp = (msg, loading, type, state) => {
+    setPopUp({
+      text: msg,
+      type: type || 'normal',
+      state: state || true,
+      loading: loading,
+    });
+  };
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    handlePopUp('Submittiong your info...', true);
+    axios
+      .post(reqs.SEND_MESSAGE_FROM_CLIENT, { ...contactVals })
+      .then((res) => {
+        if (res.data.succeed) {
+          handlePopUp(res.data.msg, false);
+        } else {
+          handlePopUp(res.data.msg, false, 'error');
+        }
+      })
+      .catch((err) => {
+        handlePopUp(err.response.data.msg, false, 'error');
+        // console.log(err);
+      });
+  };
+
   const handleValChange = (e) => {
     setContactVals((prevVals) => {
-      return { ...prevVals, [e.target.name]: [e.target.value] };
+      return { ...prevVals, [e.target.name]: e.target.value };
     });
   };
 
   return (
-    <form className=''>
+    <form onSubmit={handleContactSubmit}>
       <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 lg:gap-x-6 lg:gap-y-4 py-2'>
         <ValuedInput
           label={'Name*'}
@@ -76,10 +113,19 @@ const ContactForm = () => {
       <div>
         <PrimaryButton
           text={'submit'}
+          type={'submit'}
           classes={`bg-secondary-main w-full mt-4`}
           textClasses={`text-center w-full`}
         />
       </div>
+
+      <Popup
+        text={popUp.text}
+        type={popUp.type}
+        state={popUp.state}
+        loading={popUp.loading}
+        setPopup={setPopUp}
+      />
     </form>
   );
 };

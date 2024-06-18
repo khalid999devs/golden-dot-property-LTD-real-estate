@@ -49,6 +49,7 @@ const FloatingActionBtn = ({ value }) => {
           textClasses={'text-onPrimary-main'}
           classes={'bg-primary-main'}
           onClick={() => {
+            navigator.clipboard.write = hotlines[0];
             window.open(`tel:${hotlines[0]}`);
           }}
         />

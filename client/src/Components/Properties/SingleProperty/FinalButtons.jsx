@@ -1,7 +1,10 @@
 import React from 'react';
 import PrimaryButton from '../../Buttons/PrimaryButton';
+import { hotlines } from '../../../Assets/links';
+import { useNavigate } from 'react-router-dom';
 
-const FinalButtons = () => {
+const FinalButtons = ({ value }) => {
+  const navigate = useNavigate();
   return (
     <div className='grid w-full grid-cols-1 sm:grid-cols-2'>
       <div
@@ -15,6 +18,9 @@ const FinalButtons = () => {
           classes={
             'bg-primary-main bg-opacity-30 glass sm:!rounded-none text-white hover:z-10'
           }
+          onClick={() => {
+            navigate(`/appointment/${value}`);
+          }}
         />
       </div>
 
@@ -31,6 +37,10 @@ const FinalButtons = () => {
           classes={
             'bg-tertiary-main bg-opacity-30 glass sm:!rounded-none text-white hover:z-10'
           }
+          onClick={() => {
+            navigator.clipboard.write = hotlines[0];
+            window.open(`tel:${hotlines[0]}`);
+          }}
         />
       </div>
     </div>

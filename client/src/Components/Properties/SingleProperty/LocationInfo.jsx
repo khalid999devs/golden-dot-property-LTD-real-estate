@@ -1,6 +1,7 @@
 import { SubHeaders } from '../../Utils/Headers';
 import PrimaryButton from '../../Buttons/PrimaryButton';
 import { useNavigate } from 'react-router-dom';
+import { reqFileWrapper } from '../../../Assets/requests';
 
 const LocationInfo = ({ location }) => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const LocationInfo = ({ location }) => {
                   'bg-primary-main duration-500 !transition-all opacity-85 hover:opacity-100'
                 }
                 onClick={() => {
-                  window.open(location.gMap.url, '_blank');
+                  window.open(location.gMap?.url, '_blank');
                 }}
               />
             </div>
@@ -42,7 +43,11 @@ const LocationInfo = ({ location }) => {
         </div>
         <div className='px-4 flex items-center justify-start'>
           <div className='border max-w-[500px] w-full min-h-[250px] h-full'>
-            <img src='' className='h-full w-full object-cover' alt='' />
+            <img
+              src={reqFileWrapper(location.mapImg)}
+              className='h-full w-full object-cover'
+              alt=''
+            />
           </div>
         </div>
       </div>

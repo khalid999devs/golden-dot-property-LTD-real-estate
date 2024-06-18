@@ -84,4 +84,8 @@ export const contactInfo = [
   },
 ];
 
-export const hotlines = ['01716933161', '01XXXXXXXXX', '01XXXXXXXXX'];
+export const hotlines = ['01755-500582', '01771-470882'];
+// export const navPhones = ['017550-500582', '01771-470882'];
+
+export const officeIframe =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d228.3415837171231!2d90.43783233789148!3d23.695070964025387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b9c3a5b9bd23%3A0x79e4f56da84f9cc9!2sToah%20International.!5e0!3m2!1sen!2sbd!4v1718637845513!5m2!1sen!2sbd';

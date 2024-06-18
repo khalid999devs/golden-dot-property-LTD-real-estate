@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ContactIconText = ({
   type = '',
@@ -27,6 +28,26 @@ const ContactIconText = ({
         <span className={textClasses}>{text}</span>
       </div>
     </a>
+  );
+};
+
+export const Icontext = ({
+  icon,
+  text,
+  textClasses,
+  classes,
+  onClick,
+  ipos = 'left',
+  props,
+}) => {
+  return (
+    <div onClick={onClick} {...props}>
+      <div className={'flex gap-2 items-center ' + classes}>
+        {ipos === 'left' ? icon : ''}
+        <span className={textClasses}>{text}</span>
+        {ipos !== 'left' ? icon : ''}
+      </div>
+    </div>
   );
 };
 

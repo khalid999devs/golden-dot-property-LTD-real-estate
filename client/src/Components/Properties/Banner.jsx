@@ -5,9 +5,11 @@ const Banner = ({ img, heading }) => {
     <div
       className='w-full min-h-[400px] h-[80vh] bg-cover relative'
       style={{
-        background: `linear-gradient(180deg,rgba(0, 0, 0, 0.7) 0%,rgba(0, 0, 0, 0.3) 40%,rgba(0, 0, 0, 0.8) 100%),url(${
+        backgroundImage: `linear-gradient(180deg,rgba(0, 0, 0, 0.7) 0%,rgba(0, 0, 0, 0.3) 40%,rgba(0, 0, 0, 0.8) 100%),url(${
           img || '/Images/projectsBanner.jpg'
         })`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <h1

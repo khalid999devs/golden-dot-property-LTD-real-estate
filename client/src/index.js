@@ -25,6 +25,7 @@ import AdminSmsMail from './Pages/Admin/AdminSmsMail.jsx';
 import AdSingleProperty from './Pages/Admin/AdSingleProperty.jsx';
 
 import './axios/global.js';
+import AddProperty from './Pages/Admin/AddProperty.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
       {
         path: 'properties/:id',
         element: <AdSingleProperty />,
+      },
+      {
+        path: 'properties/add',
+        element: <AddProperty />,
       },
       {
         path: 'sms-mail',

@@ -60,7 +60,9 @@ const Bookings = () => {
             })
           );
           setBookingCount(res.data.totalCount);
-          setPages(bookingsCount === 0 ? 1 : Math.ceil(bookingsCount / rowsPg));
+          setPages(
+            bookingsCount === 0 ? 1 : Math.ceil(res.data.totalCount / rowsPg)
+          );
         }
       })
       .catch((err) => {

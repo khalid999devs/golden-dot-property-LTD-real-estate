@@ -1,10 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/Hero.css';
 import { imageContent, sliderContent } from '../../Assets/contents';
 import { gsap } from 'gsap';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     let currentImageIndex = 2;
     let currentContentIndex = 1;
@@ -187,12 +190,18 @@ const Hero = () => {
           text={'On Sale Projects'}
           textClasses={'md:text-lg'}
           classes={'bg-primary-main bg-opacity-70 hover:bg-primary-main'}
+          onClick={() => {
+            navigate(`/properties/all`);
+          }}
         />
 
         <PrimaryButton
           text={'Landshares'}
           textClasses={'md:text-lg'}
           classes={'bg-primary-main bg-opacity-70 hover:bg-primary-main '}
+          onClick={() => {
+            navigate(`/properties/landshares`);
+          }}
         />
       </div>
 

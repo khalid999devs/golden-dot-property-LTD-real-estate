@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { reqFileWrapper } from '../../Assets/requests';
 
 const SingleCard = ({ img, heading, subText, value, classes }) => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const SingleCard = ({ img, heading, subText, value, classes }) => {
     >
       <div className='w-full h-full img-sec overflow-hidden'>
         <img
-          src={img || './Images/card1.jpg'}
+          src={reqFileWrapper(img) || './Images/card1.jpg'}
           alt={heading}
           className='w-full scale-105 group-hover:scale-110 group-hover:grayscale-[0] h-full object-cover transition-all duration-1000 grayscale-[40%]'
         />

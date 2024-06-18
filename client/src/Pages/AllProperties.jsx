@@ -1,23 +1,44 @@
 import { useEffect, useState } from 'react';
 import Banner from '../Components/Properties/Banner';
 import { Link, useParams } from 'react-router-dom';
-import { cardInfos } from '../Assets/contents';
 import SingleCard from '../Components/Properties/SingleCard';
+import axios from 'axios';
+import reqs from '../Assets/requests';
+import { scrollToTop } from '../Assets/utils';
 
 const AllProperties = () => {
   const { category } = useParams();
   const [propertyCats, setPropertyCats] = useState([]);
+  const [cardInfos, setCardInfos] = useState([]);
 
-  useEffect(() => {
+  const managePropCategories = (data) => {
     setPropertyCats(
-      cardInfos.reduce((catArr, item) => {
+      data.reduce((catArr, item) => {
         if (!catArr.some((cat) => cat.value === item.category.value)) {
           return [...catArr, item.category];
         }
         return catArr;
       }, [])
     );
-  }, [cardInfos]);
+  };
+
+  useEffect(() => {
+    if (category === 'all') scrollToTop();
+  }, [category]);
+
+  useEffect(() => {
+    axios
+      .get(reqs.GET_ALL_PROPERTY)
+      .then((res) => {
+        if (res.data.succeed) {
+          managePropCategories(res.data.result);
+          setCardInfos(res.data.result);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const divideBasedOnCategory = (type, cardInfos) => {
     if (type === 'all') {
@@ -26,6 +47,8 @@ const AllProperties = () => {
       return cardInfos.filter((item) => item.category.value === type);
     }
   };
+
+  const cards = divideBasedOnCategory(category, cardInfos);
 
   return (
     <div className='min-h-[100vh]'>
@@ -57,19 +80,29 @@ const AllProperties = () => {
             );
           })}
         </div>
-        <div className='flex flex-wrap justify-center md:justify-start lg:flex-nowrap gap-7 sm:gap-4'>
-          {divideBasedOnCategory(category, cardInfos).map((card, index) => {
-            return (
-              <SingleCard
-                key={index}
-                img={card.img}
-                heading={card.heading}
-                subText={card.subText}
-                value={card.value}
-              />
-            );
-          })}
-        </div>
+        {cards.length > 0 ? (
+          <div className='flex flex-wrap justify-center md:justify-start lg:flex-nowrap gap-7 sm:gap-4'>
+            {cards.map((card, index) => {
+              return (
+                <SingleCard
+                  key={index}
+                  img={card.img}
+                  heading={card.heading}
+                  subText={card.subText}
+                  value={card.value}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className='h-[200px] sm:h-[250px] grid place-items-center'>
+            <h2 className='text-xl text-tertiary-main font-bold opacity-75'>
+              {category !== 'all'
+                ? `No Property available for this category`
+                : `No property available right now`}
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SingleCard from '../Properties/SingleCard';
-import { cardInfos } from '../../Assets/contents';
 import PrimaryButton from '../Buttons/PrimaryButton';
+import reqs from '../../Assets/requests';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const PropertyCards = () => {
+  const navigate = useNavigate();
+  const [cardInfos, setCardInfos] = useState([]);
+
   // const [isOverflowing, setIsOverflowing] = useState(true);
   // const timeline = useRef();
   // const [wInnerWidth, setwInnerWidth] = useState(window.innerWidth);
@@ -29,6 +34,19 @@ const PropertyCards = () => {
   //     arrows: false,
   //   };
 
+  useEffect(() => {
+    axios
+      .get(reqs.GET_ALL_PROPERTY)
+      .then((res) => {
+        if (res.data.succeed) {
+          setCardInfos(res.data.result);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div className=''>
       <div className='flex flex-wrap lg:flex-nowrap gap-7 sm:gap-4 justify-center max-w-[800px] w-full m-auto'>
@@ -46,7 +64,13 @@ const PropertyCards = () => {
         })}
       </div>
       <div className='w-full flex justify-center items-center mt-8'>
-        <PrimaryButton text={'Explore All'} classes={'bg-primary-main'} />
+        <PrimaryButton
+          text={'Explore All'}
+          classes={'bg-primary-main'}
+          onClick={() => {
+            navigate('/properties/all');
+          }}
+        />
       </div>
     </div>
   );

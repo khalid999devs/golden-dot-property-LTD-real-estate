@@ -82,7 +82,7 @@ const Alert = ({
           : type === 'warning'
           ? 'bg-orange-500'
           : 'bg-text-main'
-      } shadow-md rounded-md fixed top-[6%] z-50 left-[50%] ${classes}`}
+      } shadow-md rounded-md fixed top-[4%] z-50 left-[50%] ${classes}`}
       style={{ transform: 'translate(-50%,0%)' }}
     >
       <p

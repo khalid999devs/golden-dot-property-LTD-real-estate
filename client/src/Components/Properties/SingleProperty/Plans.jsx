@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SubHeaders } from '../../Utils/Headers';
+import { reqFileWrapper } from '../../../Assets/requests';
+import ImageGalleryView from '../../Utils/ImageGalleryView';
 
 const Plans = ({ keyPlans }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const items = keyPlans.map((item, index) => {
+    return {
+      ...item,
+      original: reqFileWrapper(item.planImg),
+      thumbnail: reqFileWrapper(item.planImg),
+    };
+  });
+
+  const openGallery = (index) => {
+    setCurrentIndex(index);
+    setIsOpen(true);
+  };
+
   return (
     <div
       className='w-full min-h-[450px]'
@@ -20,7 +37,9 @@ const Plans = ({ keyPlans }) => {
               <div
                 key={index}
                 className='p-2 flex items-center justify-center bg-secondary-main rounded-md w-[120px] h-[100px] bg-opacity-70 transition-all  duration-500 group hover:bg-text-main cursor-pointer'
-                onClick={() => {}}
+                onClick={() => {
+                  openGallery(index);
+                }}
               >
                 <p className='text-center text-md text-text-main group-hover:text-secondary-main duration-500 transition-all'>
                   {item.title}
@@ -30,6 +49,14 @@ const Plans = ({ keyPlans }) => {
           })}
         </div>
       </div>
+
+      {isOpen && (
+        <ImageGalleryView
+          items={items}
+          startIndex={currentIndex}
+          closeGallery={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 };

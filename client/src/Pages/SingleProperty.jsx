@@ -9,29 +9,22 @@ import Features from '../Components/Properties/SingleProperty/Features';
 import LocationInfo from '../Components/Properties/SingleProperty/LocationInfo';
 import FinalButtons from '../Components/Properties/SingleProperty/FinalButtons';
 import FloatingActionBtn from '../Components/Properties/SingleProperty/FloatingActionBtn';
+import reqs from '../Assets/requests';
 
 const SingleProperty = () => {
   const { propName } = useParams();
   const [propertyData, setPropertyData] = useState({
-    img: '/Images/card1.jpg',
+    id: 1,
+    img: '',
     heading: 'Green Valley Basundhara',
     value: 'green-valley-basundhara',
     subText: 'Residential project, Basundhara Riverview',
     category: { value: 'apartments', title: 'Apartments' },
-    galleryImgs: [
-      { id: 1, thumbnail: '', title: 'Main Img', url: '' },
-      { id: 2, thumbnail: '', title: 'Main Img 1', url: '' },
-      { id: 3, thumbnail: '', title: 'Main Img 2', url: '' },
-      { id: 4, thumbnail: '', title: 'Main Img 3', url: '' },
-      { id: 5, thumbnail: '', title: 'Main Img 4', url: '' },
-    ],
-    videos: [
-      { id: 1, title: 'video1', url: '', thumbnail: '' },
-      { id: 2, title: 'video2', url: '', thumbnail: '' },
-    ],
+    galleryImgs: [],
+    videos: [],
     virtualTourVideo: {
       title: '',
-      url: 'https://youtu.be/xGppycSuaHY?si=uHnxwq8NNvMefle6',
+      url: '',
     },
     projectInfos: [
       {
@@ -56,9 +49,9 @@ const SingleProperty = () => {
       },
     ],
     keyPlans: [
-      { id: 1, title: 'Typical Level Plan', thumbnail: '', original: '' },
-      { id: 2, title: 'Ground Level', thumbnail: '', original: '' },
-      { id: 3, title: 'Roof Level', thumbnail: '', original: '' },
+      { id: 1, title: 'Typical Level Plan', planImg: '' },
+      { id: 2, title: 'Ground Level', planImg: '' },
+      { id: 3, title: 'Roof Level', planImg: '' },
     ],
     features: [
       {
@@ -114,97 +107,22 @@ const SingleProperty = () => {
         },
         url: '',
       },
+      mapImg: '',
     },
   });
 
   useEffect(() => {
     axios
-      .get('')
-      .then((res) => {})
+      .get(`${reqs.GET_SINGLE_PROPERTY}/${propName}`)
+      .then((res) => {
+        if (res.data.succeed) {
+          setPropertyData(res.data.result);
+        }
+      })
       .catch((err) => {
         console.log(err);
       })
-      .finally((_) => {
-        // setPropertyData(
-        //   {
-        //   img: '/Images/card1.jpg',
-        //   heading: 'Green Valley Basundhara',
-        //   value: 'green-valley-basundhara',
-        //   subText: 'Residential project, Basundhara Riverview',
-        //   category: { value: 'apartments', title: 'Apartments' },
-        //   galleryImgs: [
-        //     { id: 1, thumbnail: '', title: 'Main Img', url: '' },
-        //     { id: 2, thumbnail: '', title: 'Main Img 1', url: '' },
-        //     { id: 3, thumbnail: '', title: 'Main Img 2', url: '' },
-        //     { id: 4, thumbnail: '', title: 'Main Img 2', url: '' },
-        //     { id: 5, thumbnail: '', title: 'Main Img 2', url: '' },
-        //   ],
-        //   videos: [
-        //     { id: 1, title: 'video1', url: '' },
-        //     { id: 2, title: 'video1', url: '' },
-        //   ],
-        //   virtualTourVideo: {
-        //     title: '',
-        //     url: '',
-        //   },
-        //   projectInfos: [
-        //     {
-        //       title: 'Project Address',
-        //       value: 'Basundhara riverview',
-        //     },
-        //     {
-        //       title: 'Type',
-        //       value: 'Apartment (Residential building)',
-        //     },
-        //     {
-        //       title: 'Land Area',
-        //       value: '5 katha',
-        //     },
-        //     {
-        //       title: 'Est. Total Price ',
-        //       value: '70 lakh',
-        //     },
-        //     {
-        //       title: 'No. of Level/storied ',
-        //       value: 'G+08',
-        //     },
-        //   ],
-        //   keyPlans: [
-        //     { id: 1, title: 'Typical Level Plan', thumbnail: '', original: '' },
-        //     { id: 2, title: 'Ground Level', thumbnail: '', original: '' },
-        //     { id: 3, title: 'Roof Level', thumbnail: '', original: '' },
-        //   ],
-        //   features: [
-        //     {
-        //       id: 1,
-        //       title: 'feature1',
-        //     },
-        //     {
-        //       id: 2,
-        //       title: 'feature2',
-        //     },
-        //     {
-        //       id: 3,
-        //       title: 'feature3',
-        //     },
-        //     {
-        //       id: 4,
-        //       title: 'feature4',
-        //     },
-        //   ],
-        //   location: {
-        //     texts:
-        //       '1000-1001 No. Plot, Basundhara Riverview, South Keraniganj, Dhaka',
-        //     gMap: {
-        //       state: true,
-        //       infos: {
-        //         lat: 61.2176,
-        //         lng: -149.8997,
-        //       },
-        //     },
-        //   },
-        // });
-      });
+      .finally((_) => {});
   }, [propName]);
 
   return (
@@ -221,14 +139,24 @@ const SingleProperty = () => {
         />
       </div>
       <div className='mt-8'>
-        <Plans keyPlans={propertyData.keyPlans} />
-        <Gallery
-          galleryImages={propertyData.galleryImgs}
-          videos={propertyData.videos}
-        />
-        <Features features={propertyData.features} />
-        <LocationInfo location={propertyData.location} />
-        <FinalButtons />
+        {propertyData.keyPlans?.length > 0 && (
+          <Plans keyPlans={propertyData.keyPlans} />
+        )}
+
+        {propertyData.galleryImgs?.length > 0 && (
+          <Gallery
+            galleryImages={propertyData.galleryImgs}
+            videos={propertyData.videos}
+          />
+        )}
+        {propertyData.features?.length > 0 && (
+          <Features features={propertyData.features} />
+        )}
+        {(propertyData.location?.texts.length > 0 ||
+          propertyData.location?.gMap?.url) && (
+          <LocationInfo location={propertyData.location} />
+        )}
+        <FinalButtons value={propertyData.value} />
       </div>
       <FloatingActionBtn value={propertyData.value} />
     </div>

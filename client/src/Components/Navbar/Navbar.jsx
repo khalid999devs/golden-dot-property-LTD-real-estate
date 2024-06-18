@@ -1,4 +1,4 @@
-import { links } from '../../Assets/links';
+import { hotlines, links } from '../../Assets/links';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import { Link, NavLink } from 'react-router-dom';
@@ -53,7 +53,7 @@ const Navbar = () => {
       >
         {/* logo */}
         <Link to={'/'}>
-          <div className='pr-0 md:pr-7'>
+          <div className='pr-0 md:pr-7 py-1'>
             <img
               src='/Images/logo.png'
               alt=''
@@ -76,7 +76,7 @@ const Navbar = () => {
                       : isActive
                       ? 'text-md transition-colors text-primary-main'
                       : `text-md transition-colors hover:text-secondary-dark duration-200 ${
-                          !showNavbar && 'text-secondary-main'
+                          !showNavbar && 'text-primary-light'
                         }`
                   }
                 >
@@ -86,15 +86,23 @@ const Navbar = () => {
             })}
           </div>
         </div>
-        <div className='flex  flex-row gap-3 items-center'>
+        <div className='flex flex-row gap-3 items-center'>
           <div
             className={`hidden md:flex py-1 flex-col ${
-              showNavbar ? 'hidden' : '!text-secondary-main'
+              showNavbar ? 'hidden' : '!text-primary-light'
             }`}
           >
-            <p>01XXXXXXXXX</p>
-            <p>01XXXXXXXXX</p>
-            <p>01XXXXXXXXX</p>
+            {hotlines.map((number, key) => (
+              <p
+                key={key}
+                onClick={() => {
+                  navigator.clipboard.writeText(number);
+                }}
+                className='cursor-pointer inline-block whitespace-nowrap'
+              >
+                {`${number}`}
+              </p>
+            ))}
           </div>
 
           <div className='py-3 md:hidden flex gap-4'>

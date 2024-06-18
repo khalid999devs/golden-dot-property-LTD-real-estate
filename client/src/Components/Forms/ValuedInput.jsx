@@ -11,12 +11,14 @@ const ValuedInput = ({
   classes,
   inputClasses,
   textArea = false,
+  size = 'big',
+  labelClass,
 }) => {
   return (
     <div className={'grid gap-1.5 w-full ' + classes}>
       <label
         htmlFor={inputProps.name}
-        className='text-sm font-medium opacity-90'
+        className={'text-sm font-medium opacity-90 ' + labelClass}
       >
         {label}
       </label>
@@ -26,7 +28,11 @@ const ValuedInput = ({
             type={type || 'text'}
             {...inputProps}
             className={
-              'p-3 py-2.5 text-sm border border-opacity-50 border-onPrimary-main outline-none rounded-md w-full placeholder:text-secondary-main placeholder:opacity-100 placeholder:font-extralight bg-transparent text-text-main ' +
+              `p-3 ${
+                size === 'small'
+                  ? 'py-1.5 border-b'
+                  : 'py-2.5 border rounded-md placeholder:font-extralight'
+              } text-sm border-opacity-50 border-onPrimary-main outline-none w-full placeholder:text-secondary-main placeholder:opacity-100 bg-transparent text-text-main ` +
               inputClasses
             }
           />
@@ -34,7 +40,7 @@ const ValuedInput = ({
           <textarea
             {...inputProps}
             className={
-              'p-3 py-2.5 text-sm border border-opacity-50 border-onPrimary-main outline-none rounded-md w-full bg-transparent placeholder:text-secondary-main placeholder:opacity-80 placeholder:font-extralight text-text-main ' +
+              `p-3 py-2.5 text-sm border border-opacity-50 border-onPrimary-main outline-none rounded-md w-full bg-transparent placeholder:text-secondary-main placeholder:opacity-80 placeholder:font-extralight text-text-main ` +
               inputClasses
             }
           ></textarea>
@@ -53,7 +59,11 @@ const ValuedInput = ({
       {alert?.msg && (
         <p
           className={`${
-            alert.state === 'error' ? 'text-red-700' : 'text-orange-600'
+            alert.state === 'error'
+              ? 'text-red-700'
+              : alert.state === 'none'
+              ? 'text-tertiary-main'
+              : 'text-orange-600'
           } text-xs ml-1 -mt-1.5`}
         >
           {alert.msg}
