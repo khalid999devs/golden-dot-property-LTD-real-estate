@@ -5,6 +5,18 @@ export const reqFileWrapper = (src) => {
   else return so + '/' + src;
 };
 
+export const validFileWrapper = (fileImg) => {
+  if (typeof fileImg === 'object') {
+    if (fileImg.name) {
+      return window.URL.createObjectURL(fileImg);
+    } else {
+      return null;
+    }
+  } else {
+    return reqFileWrapper(fileImg);
+  }
+};
+
 const reqs = {
   // admin
   ADMIN_LOGIN: '/api/admin/login',
@@ -25,7 +37,7 @@ const reqs = {
   //contact
   SEND_MESSAGE_FROM_CLIENT: '/api/contact/sendMessage',
   GET_ALL_MESSAGES: '/api/contact/messages',
-  SEND_EMAIL_TO_CLIENT: '/api/contact/emailToClient/custom',
+  SEND_EMAIL_TO_CLIENT: '/api/contact/emailToClient',
   SEND_SMS_TO_CLIENT: '/api/contact/smsToClient/custom',
 };
 

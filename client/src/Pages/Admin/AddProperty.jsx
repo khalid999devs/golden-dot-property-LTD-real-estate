@@ -1,5 +1,4 @@
-import React from 'react';
-import { ContactIconText, Icontext } from '../../Components/Utils/IconTexts';
+import { Icontext } from '../../Components/Utils/IconTexts';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import PropertyForm from '../../Components/Admin/Property/PropertyForm/PropertyForm';

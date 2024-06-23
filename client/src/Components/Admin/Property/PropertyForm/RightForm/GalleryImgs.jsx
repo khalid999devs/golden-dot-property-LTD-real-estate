@@ -5,8 +5,9 @@ import ImgFileUpload from '../../../../Utils/ImgFileUpload';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
 import { GoPlus } from 'react-icons/go';
 import { IoClose } from 'react-icons/io5';
+import { validFileWrapper } from '../../../../../Assets/requests';
 
-const GalleryImgs = ({ handleValChange, rightData, setAlert }) => {
+const GalleryImgs = ({ handleValChange, rightData, setAlert, mode }) => {
   const [galleryInfo, setGalleryInfo] = useState({
     id: 0,
     thumbnail: {},
@@ -122,7 +123,9 @@ const GalleryImgs = ({ handleValChange, rightData, setAlert }) => {
         </div>
 
         {/* image preview and submit*/}
-        {galleryInfo.url?.name || rightData.galleryImgs?.length > 0 ? (
+        {galleryInfo.url?.name ||
+        (galleryInfo.url && typeof galleryInfo.url === 'string') ||
+        rightData?.galleryImgs?.length > 0 ? (
           <div className='flex flex-col justify-between h-full gap-4 items-center'>
             <div className='w-full min-h-[120px] h-auto max-h-[250px]'>
               <ImgFileUpload
@@ -168,7 +171,7 @@ const GalleryImgs = ({ handleValChange, rightData, setAlert }) => {
       </form>
 
       <div className='flex flex-row flex-wrap w-full h-auto gap-1 mt-3'>
-        {rightData.galleryImgs.map((item, key) => {
+        {rightData?.galleryImgs.map((item, key) => {
           return (
             <div
               key={key}
@@ -183,7 +186,7 @@ const GalleryImgs = ({ handleValChange, rightData, setAlert }) => {
               }}
             >
               <img
-                src={window.URL.createObjectURL(item.thumbnail)}
+                src={validFileWrapper(item.thumbnail)}
                 className='w-full h-full object-cover'
                 alt={'thumbnail image'}
               />

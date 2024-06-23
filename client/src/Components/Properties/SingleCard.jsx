@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { reqFileWrapper } from '../../Assets/requests';
 
-const SingleCard = ({ img, heading, subText, value, classes }) => {
+const SingleCard = ({ img, heading, subText, value, classes, onClick }) => {
   const navigate = useNavigate();
 
   return (
@@ -11,7 +11,11 @@ const SingleCard = ({ img, heading, subText, value, classes }) => {
         classes
       }
       onClick={() => {
-        navigate(`/property/${value}`);
+        if (!onClick) {
+          navigate(`/property/${value}`);
+        } else {
+          onClick();
+        }
       }}
     >
       <div className='w-full h-full img-sec overflow-hidden'>

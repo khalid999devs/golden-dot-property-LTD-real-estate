@@ -29,7 +29,6 @@ const Admin = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         navigate('/admin-login', { replace: true });
       });
   }, []);

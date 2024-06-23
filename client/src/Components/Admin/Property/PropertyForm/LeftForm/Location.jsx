@@ -4,7 +4,7 @@ import { GoPlus } from 'react-icons/go';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
 import ImgFileUpload from '../../../../Utils/ImgFileUpload';
 
-const Location = ({ leftVals, setLeftVals }) => {
+const Location = ({ leftVals, setLeftVals, mode }) => {
   const [locaText, setLocaText] = useState('');
 
   const handleLocValChange = (name, value) => {

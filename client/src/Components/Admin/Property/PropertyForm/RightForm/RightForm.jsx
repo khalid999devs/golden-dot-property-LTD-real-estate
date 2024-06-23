@@ -4,7 +4,7 @@ import Checkbox from '../../../../Forms/Checkbox';
 import GalleryImgs from './GalleryImgs';
 import Keyplans from './Keyplans';
 
-const RightForm = ({ rightData, setRightData, setAlert }) => {
+const RightForm = ({ rightData, setRightData, setAlert, mode }) => {
   const [isBannerComp, setIsBannerComp] = useState(false);
 
   const handleValChange = (name, value) => {
@@ -52,6 +52,7 @@ const RightForm = ({ rightData, setRightData, setAlert }) => {
 
         {/* Gallery Images */}
         <GalleryImgs
+          mode={mode}
           setAlert={setAlert}
           handleValChange={handleValChange}
           rightData={rightData}
@@ -59,6 +60,7 @@ const RightForm = ({ rightData, setRightData, setAlert }) => {
 
         {/* keyPlans */}
         <Keyplans
+          mode={mode}
           setAlert={setAlert}
           handleValChange={handleValChange}
           rightData={rightData}

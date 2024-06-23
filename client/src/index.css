@@ -70,6 +70,23 @@
 .pp-medium {
   font-family: 'PP Neue Montreal SemiBold';
 }
+
+.font-family-default {
+  font-family: 'sans-serif';
+}
+.font-family-Arial {
+  font-family: Arial, sans-serif;
+}
+.font-family-Georgia {
+  font-family: Georgia, serif;
+}
+.font-family-Courier {
+  font-family: 'Courier New', Courier, monospace;
+}
+.font-family-Times {
+  font-family: 'Times New Roman', Times, serif;
+}
+
 /* main css starts here */
 body {
   font-family: 'Lato', sans-serif;

@@ -80,7 +80,7 @@ const router = createBrowserRouter([
         element: <AdminProperty />,
       },
       {
-        path: 'properties/:id',
+        path: 'properties/:propVal/:mode',
         element: <AdSingleProperty />,
       },
       {

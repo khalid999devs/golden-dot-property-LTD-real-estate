@@ -4,7 +4,7 @@ import { handleCompressImg } from './ImageCompression';
 import { IoImageOutline } from 'react-icons/io5';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import { RiImageAddLine } from 'react-icons/ri';
-import { reqFileWrapper } from '../../Assets/requests';
+import { reqFileWrapper, validFileWrapper } from '../../Assets/requests';
 import { IoClose } from 'react-icons/io5';
 
 const ImgFileUpload = ({
@@ -77,11 +77,7 @@ const ImgFileUpload = ({
         }
       >
         <img
-          src={
-            typeof fileImg === 'object'
-              ? window.URL.createObjectURL(fileImg)
-              : reqFileWrapper(fileImg)
-          }
+          src={validFileWrapper(fileImg)}
           alt='FileImg'
           className='w-full h-full rounded-lg object-cover'
         />

@@ -15,16 +15,14 @@ const bookingTableHeads = [
   { title: 'Date' },
 ];
 
-const SingleHead = ({ title }) => {
-  return (
-    <th
-      scope='col'
-      className='text-sm font-medium text-primary-main px-3 py-2 text-left'
-    >
-      {title || 'thead'}
-    </th>
-  );
-};
+const SingleHead = ({ title }) => (
+  <th
+    scope='col'
+    className='text-sm font-medium text-primary-main px-3 py-2 text-left'
+  >
+    {title || 'thead'}
+  </th>
+);
 
 const Bookings = () => {
   const [rowsPg, setRowsPg] = useState(20);
@@ -51,7 +49,6 @@ const Bookings = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         if (res.data.succeed) {
           setData(
             res.data.result.map((item) => {
@@ -67,7 +64,7 @@ const Bookings = () => {
       })
       .catch((err) => {
         alert(err?.response?.data.msg);
-        console.log(err);
+        console.error(err);
       });
   }, [pageNo, rowsPg, targetProperty]);
 
@@ -77,66 +74,64 @@ const Bookings = () => {
         <table className='min-w-[600px] w-full border shadow-md'>
           <thead className='bg-onPrimary-main border-b text-primary-main'>
             <tr>
-              {bookingTableHeads.map((thead, key) => {
-                return <SingleHead key={key} title={thead.title} />;
-              })}
+              {bookingTableHeads.map((thead, key) => (
+                <SingleHead key={key} title={thead.title} />
+              ))}
             </tr>
           </thead>
           <tbody>
-            {data?.map((item, value) => {
-              return (
-                <tr key={value}>
-                  <td className='px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                    {value + 1}
-                  </td>
-                  <td className='text-sm text-gray-900  px-3 py-4 whitespace-nowrap'>
-                    {item.fullName}
-                  </td>
-                  <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
-                    <a
-                      href={`tel:${item.email}`}
-                      target='_blank'
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.phone);
-                      }}
+            {data?.map((item, value) => (
+              <tr key={value}>
+                <td className='px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                  {value + 1}
+                </td>
+                <td className='text-sm text-gray-900  px-3 py-4 whitespace-nowrap'>
+                  {item.fullName}
+                </td>
+                <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
+                  <a
+                    href={`tel:${item.email}`}
+                    target='_blank'
+                    onClick={() => {
+                      navigator.clipboard.writeText(item.phone);
+                    }}
+                  >
+                    {item.phone}
+                  </a>
+                </td>
+                <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
+                  <a
+                    href={`mailto:${item.email}`}
+                    target='_blank'
+                    onClick={() => {
+                      navigator.clipboard.writeText(item.email);
+                    }}
+                  >
+                    <MdOutlineMailOutline className='text-xl' />
+                  </a>
+                </td>
+                <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
+                  {item.address}
+                </td>
+                <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
+                  {item.properties.map((property, key) => (
+                    <span
+                      className={`${
+                        targetProperty === property.value
+                          ? 'font-bold text-tertiary-main'
+                          : ''
+                      }`}
+                      key={key}
                     >
-                      {item.phone}
-                    </a>
-                  </td>
-                  <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
-                    <a
-                      href={`mailto:${item.email}`}
-                      target='_blank'
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.email);
-                      }}
-                    >
-                      <MdOutlineMailOutline className='text-xl' />
-                    </a>
-                  </td>
-                  <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
-                    {item.address}
-                  </td>
-                  <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
-                    {item.properties.map((property, key) => (
-                      <span
-                        className={`${
-                          targetProperty === property.value
-                            ? 'font-bold text-tertiary-main'
-                            : ''
-                        }`}
-                        key={key}
-                      >
-                        {property.heading}&nbsp;
-                      </span>
-                    ))}
-                  </td>
-                  <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
-                    {item.createdAt}
-                  </td>
-                </tr>
-              );
-            })}
+                      {property.heading}&nbsp;
+                    </span>
+                  ))}
+                </td>
+                <td className='text-sm text-gray-900 px-3 py-4 whitespace-nowrap'>
+                  {item.createdAt}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -149,9 +144,10 @@ const Bookings = () => {
               setPageNo(Number(e.target.value));
             }}
             name={'page'}
-            optionsObjs={Array.from({ length: pages }, (v, i) => {
-              return { title: i + 1, value: i + 1 };
-            })}
+            optionsObjs={Array.from({ length: pages }, (v, i) => ({
+              title: i + 1,
+              value: i + 1,
+            }))}
           />
         </div>
         <div>

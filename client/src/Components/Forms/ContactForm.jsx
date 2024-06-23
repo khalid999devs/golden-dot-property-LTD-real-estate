@@ -14,6 +14,16 @@ const ContactForm = () => {
     message: '',
   });
 
+  const resetContactVals = () => {
+    setContactVals({
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      message: '',
+    });
+  };
+
   const [popUp, setPopUp] = useState({
     text: '',
     state: false,
@@ -38,6 +48,7 @@ const ContactForm = () => {
       .then((res) => {
         if (res.data.succeed) {
           handlePopUp(res.data.msg, false);
+          resetContactVals();
         } else {
           handlePopUp(res.data.msg, false, 'error');
         }

@@ -156,7 +156,7 @@ const LeftForm = ({
         <VirtualTourVideo leftVals={leftVals} setLeftVals={setLeftVals} />
 
         {/* Map and location */}
-        <Location leftVals={leftVals} setLeftVals={setLeftVals} />
+        <Location leftVals={leftVals} setLeftVals={setLeftVals} mode={mode} />
       </div>
 
       {/* submit buttons */}

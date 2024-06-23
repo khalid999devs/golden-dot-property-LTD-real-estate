@@ -5,8 +5,9 @@ import ImgFileUpload from '../../../../Utils/ImgFileUpload';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
 import { GoPlus } from 'react-icons/go';
 import { IoClose } from 'react-icons/io5';
+import { validFileWrapper } from '../../../../../Assets/requests';
 
-const Keyplans = ({ handleValChange, rightData, setAlert }) => {
+const Keyplans = ({ handleValChange, rightData, setAlert, mode }) => {
   const [keyplanInfo, setKeyplanInfo] = useState({
     id: 0,
     title: '',
@@ -116,7 +117,7 @@ const Keyplans = ({ handleValChange, rightData, setAlert }) => {
       </form>
 
       <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-3 w-full h-auto gap-2 mt-3'>
-        {rightData.keyPlans?.map((item, key) => {
+        {rightData?.keyPlans?.map((item, key) => {
           return (
             <div
               key={key}
@@ -126,7 +127,7 @@ const Keyplans = ({ handleValChange, rightData, setAlert }) => {
               }}
             >
               <img
-                src={window.URL.createObjectURL(item.planImg)}
+                src={validFileWrapper(item.planImg)}
                 className='w-full h-full object-cover'
                 alt={'thumbnail image'}
               />

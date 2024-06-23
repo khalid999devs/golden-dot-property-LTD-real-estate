@@ -4,6 +4,7 @@ import PrimaryButton from '../../../../Buttons/PrimaryButton';
 
 const ProjectInfos = ({ setLeftVals, leftVals }) => {
   const [projectInfos, setProjectInfos] = useState({
+    id: 0,
     title: '',
     value: '',
   });
@@ -19,10 +20,16 @@ const ProjectInfos = ({ setLeftVals, leftVals }) => {
     setLeftVals((leftVals) => {
       return {
         ...leftVals,
-        projectInfos: [...leftVals.projectInfos, projectInfos],
+        projectInfos: [
+          ...leftVals.projectInfos,
+          {
+            ...projectInfos,
+            id: leftVals.projectInfos?.length + 1 + '@' + Date.now(),
+          },
+        ],
       };
     });
-    setProjectInfos({ title: '', value: '' });
+    setProjectInfos({ id: 0, title: '', value: '' });
   };
 
   return (
@@ -74,6 +81,7 @@ const ProjectInfos = ({ setLeftVals, leftVals }) => {
               <div
                 key={index}
                 className='flex gap-1 items-center pt-1 pp-regular !font-[300] text-sm'
+                id={item.id || index + 1}
               >
                 {index + 1}. &nbsp;
                 <span className='font-[600] opacity-80'>

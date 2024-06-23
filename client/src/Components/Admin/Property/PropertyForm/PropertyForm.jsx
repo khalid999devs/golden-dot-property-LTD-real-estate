@@ -18,11 +18,12 @@ const PropertyForm = ({ data }) => {
   useEffect(() => {
     if (data?.heading && data?.img && !rightData.img?.name) {
       setRightData((rightData) => {
-        setRightData({
+        return {
+          ...rightData,
           img: data.img,
           galleryImgs: data.galleryImgs,
           keyPlans: data.keyPlans,
-        });
+        };
       });
       setMode('edit');
     }
