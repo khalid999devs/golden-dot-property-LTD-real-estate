@@ -16,6 +16,7 @@ const LeftForm = ({
   handlePropertySubmit,
   handleDataReset,
   mode,
+  handleDeleteImg,
 }) => {
   const naviagte = useNavigate();
 
@@ -156,7 +157,12 @@ const LeftForm = ({
         <VirtualTourVideo leftVals={leftVals} setLeftVals={setLeftVals} />
 
         {/* Map and location */}
-        <Location leftVals={leftVals} setLeftVals={setLeftVals} mode={mode} />
+        <Location
+          leftVals={leftVals}
+          setLeftVals={setLeftVals}
+          mode={mode}
+          handleDeleteImg={handleDeleteImg}
+        />
       </div>
 
       {/* submit buttons */}

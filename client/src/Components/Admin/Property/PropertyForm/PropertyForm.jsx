@@ -4,6 +4,7 @@ import RightForm from './RightForm/RightForm';
 import Alert from '../../../Utils/Alert';
 import axios from 'axios';
 import reqs from '../../../../Assets/requests';
+import Popup from '../../../Utils/Popup';
 
 const PropertyForm = ({ data }) => {
   const [rightData, setRightData] = useState({
@@ -14,9 +15,17 @@ const PropertyForm = ({ data }) => {
   const [mode, setMode] = useState('add'); //add||edit
 
   const [alert, setAlert] = useState({ text: '', type: '', state: false });
+  const [popup, setPopup] = useState({
+    text: '',
+    state: false,
+    type: 'normal',
+  });
+  const [loading, setLoading] = useState(false);
+
+  console.log(data);
 
   useEffect(() => {
-    if (data?.heading && data?.img && !rightData.img?.name) {
+    if (data?.heading && !rightData.img?.name) {
       setRightData((rightData) => {
         return {
           ...rightData,
@@ -32,7 +41,7 @@ const PropertyForm = ({ data }) => {
   const handleDataReset = () => {
     if (data?.heading) {
       setRightData({
-        img: data.img,
+        img: data.img || {},
         galleryImgs: data.galleryImgs,
         keyPlans: data.keyPlans,
       });
@@ -41,18 +50,7 @@ const PropertyForm = ({ data }) => {
     }
   };
 
-  const handlePropertySubmit = ({
-    lData,
-    // heading,
-    // value,
-    // subText,
-    // category,
-    // projectInfos,
-    // features,
-    // videos,
-    // virtualTourVideo,
-    // location
-  }) => {
+  const handlePropertySubmit = ({ lData }) => {
     if (!lData?.heading || !lData?.category) {
       setAlert({
         text: `heading or category must not be empty`,
@@ -109,6 +107,26 @@ const PropertyForm = ({ data }) => {
     axios.post(reqs.ADD_PROPERTY, fd, { withCredentials: true });
   };
 
+  const handleDeleteImg = (delMode, imgId) => {
+    if (mode === 'edit') {
+      axios
+        .put(
+          reqs.DELETE_PROPERTY_IMAGES,
+          { mode: delMode, propertyId: data.id, imgId },
+          { withCredentials: true }
+        )
+        .catch((err) => {
+          setPopup({
+            text:
+              err.response?.data?.msg ||
+              'Something wrong happened! please try again.',
+            type: 'error',
+            state: true,
+          });
+        });
+    }
+  };
+
   return (
     <div className='flex flex-col-reverse gap-4 lg:grid lg:gap-4 lg:grid-cols-[1.5fr,1fr] max-w-[1320px] w-full m-auto'>
       <LeftForm
@@ -116,18 +134,27 @@ const PropertyForm = ({ data }) => {
         handlePropertySubmit={handlePropertySubmit}
         handleDataReset={handleDataReset}
         mode={mode}
+        handleDeleteImg={handleDeleteImg}
       />
       <RightForm
         rightData={rightData}
         setRightData={setRightData}
         mode={mode}
         setAlert={setAlert}
+        handleDeleteImg={handleDeleteImg}
       />
       <Alert
         text={alert.text}
         type={alert.type}
         state={alert.state}
         setAlert={setAlert}
+      />
+      <Popup
+        text={popup.text}
+        type={popup.type}
+        state={popup.state}
+        setPopup={setPopup}
+        loading={loading}
       />
     </div>
   );

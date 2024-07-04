@@ -32,10 +32,23 @@ const Bookings = () => {
   const [targetProperty, setTargetProperty] = useState('all');
   const [allProperty, setAllProperty] = useState([
     { title: 'All', value: 'all' },
-    { title: 'New Project', value: 'new-project-basundhara' },
-    { title: 'Green Valley', value: 'green-valley-basundhara' },
   ]);
   const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(reqs.GET_ALL_PROPERTY_LABELS)
+      .then((res) => {
+        if (res.data.succeed) {
+          setAllProperty((allProperty) => {
+            return [...allProperty, ...res.data.result];
+          });
+        }
+      })
+      .catch((err) => {
+        alert(err.response.data.msg);
+      });
+  }, []);
 
   useEffect(() => {
     axios

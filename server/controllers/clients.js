@@ -16,7 +16,6 @@ const sendSMS = require('../utils/sendSMS');
 //active now
 const registration = async (req, res) => {
   const newClient = await clients.create(req.user);
-  console.log(newClient);
   await clientproperties.create({ ...req.property, clientId: newClient.id });
 
   mailer({ client: newClient }, 'newClient').catch((err) => {
@@ -25,7 +24,7 @@ const registration = async (req, res) => {
 
   res.status(StatusCodes.CREATED).json({
     succeed: true,
-    msg: 'Congratulations!! Your registration is successful.',
+    msg: 'Congratulations! Your booking for appointment is successful.',
   });
 };
 

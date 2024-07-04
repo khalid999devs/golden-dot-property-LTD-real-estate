@@ -4,7 +4,13 @@ import Checkbox from '../../../../Forms/Checkbox';
 import GalleryImgs from './GalleryImgs';
 import Keyplans from './Keyplans';
 
-const RightForm = ({ rightData, setRightData, setAlert, mode }) => {
+const RightForm = ({
+  rightData,
+  setRightData,
+  setAlert,
+  mode,
+  handleDeleteImg,
+}) => {
   const [isBannerComp, setIsBannerComp] = useState(false);
 
   const handleValChange = (name, value) => {
@@ -12,6 +18,8 @@ const RightForm = ({ rightData, setRightData, setAlert, mode }) => {
       return { ...rightData, [name]: value };
     });
   };
+
+  console.log(rightData);
 
   return (
     <div>
@@ -32,12 +40,13 @@ const RightForm = ({ rightData, setRightData, setAlert, mode }) => {
           <div className='w-full min-h-[260px] md:min-h-[350px] lg:min-h-[250px] h-full max-h-[30s0px]'>
             <ImgFileUpload
               type='single'
-              fileImg={rightData?.img}
+              fileImg={rightData?.img || {}}
               onLoad={(file) => {
                 handleValChange('img', file);
               }}
               clearFileImg={() => {
                 handleValChange('img', {});
+                handleDeleteImg('banner');
               }}
               compress={{
                 state: isBannerComp,
@@ -56,6 +65,7 @@ const RightForm = ({ rightData, setRightData, setAlert, mode }) => {
           setAlert={setAlert}
           handleValChange={handleValChange}
           rightData={rightData}
+          handleDeleteImg={handleDeleteImg}
         />
 
         {/* keyPlans */}
@@ -64,6 +74,7 @@ const RightForm = ({ rightData, setRightData, setAlert, mode }) => {
           setAlert={setAlert}
           handleValChange={handleValChange}
           rightData={rightData}
+          handleDeleteImg={handleDeleteImg}
         />
       </div>
     </div>

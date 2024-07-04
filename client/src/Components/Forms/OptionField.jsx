@@ -10,7 +10,7 @@ const OptionField = ({
   return (
     <div
       className={
-        `w-full relative inline-block after:content-["\\25BC"] after:absolute after:top-[57%] after:right-[10px] after:translate-[-50%,-50%] after:pointer-events-none after:text-white after:text-sm ` +
+        `w-full relative inline-block after:content-["▼"] after:absolute after:top-[57%] after:right-[10px] after:translate-[-50%,-50%] after:pointer-events-none after:text-white after:text-sm ` +
         containerClass
       }
     >

@@ -22,7 +22,7 @@ const mailer = async (data, mode) => {
   const { subject, body, text } = htmlCreator(mode, data);
 
   let mailContent = {
-    from: `Chemgenie <${process.env.SERVER_EMAIL}>`,
+    from: `GOLDEN DOT PROPERTIES LTD. <${process.env.SERVER_EMAIL}>`,
     to: `${data.client.email}`,
     subject: subject,
     html: body ? EmailCover(body) : null,

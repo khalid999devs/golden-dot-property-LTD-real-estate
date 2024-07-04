@@ -5,7 +5,7 @@ const { BadRequestError } = require('../errors');
 //file upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const validFields = /clients|bigimg|thumbnail|banner/;
+    const validFields = /clients|bigimg|thumbnail|banner|mapImg|planImg/;
     if (!file.fieldname) {
       return cb(null, true);
     }
@@ -17,14 +17,21 @@ const storage = multer.diskStorage({
 
     let destName = resolve(__dirname, `../uploads/${file.fieldname}`);
 
-    const headingStr = req.body.heading.split(' ').join('-');
+    const headingStr = req.body.heading
+      .split(' ')
+      .map((word) => word.toLowerCase())
+      .join('-');
 
     if (file.fieldname === 'bigimg' || file.fieldname === 'thumbnail') {
       destName = resolve(
         __dirname,
         `../uploads/properties/${headingStr}/gallery/${file.fieldname}`
       );
-    } else if (file.fieldname === 'banner') {
+    } else if (
+      file.fieldname === 'banner' ||
+      file.fieldname === 'mapImg' ||
+      file.fieldname === 'planImg'
+    ) {
       destName = resolve(
         __dirname,
         `../uploads/properties/${headingStr}/${file.fieldname}`
@@ -43,16 +50,34 @@ const storage = multer.diskStorage({
 
     if (file.fieldname === 'bigimg' || file.fieldname === 'thumbnail') {
       pathName = `uploads/properties/${headingStr}/gallery/${file.fieldname}`;
-    } else if (file.fieldname === 'banner') {
+    } else if (
+      file.fieldname === 'banner' ||
+      file.fieldname === 'mapImg' ||
+      file.fieldname === 'planImg'
+    ) {
       pathName = `uploads/properties/${headingStr}/${file.fieldname}`;
     }
     cb(null, pathName);
   },
 
   filename: (req, file, cb) => {
-    let type = file.originalname.split('.');
-    let fileExt = type[type.length - 1];
-    const headingStr = req.body.heading.split(' ').join('-');
+    let type, fileExt;
+    if (
+      file.fieldname === 'bigimg' ||
+      file.fieldname === 'thumbnail' ||
+      file.fieldname === 'planImg'
+    ) {
+      type = file.mimetype.split('/');
+      fileExt = type[type.length - 1];
+    } else {
+      type = file.originalname.split('.');
+      fileExt = type[type.length - 1];
+    }
+
+    const headingStr = req.body.heading
+      .split(' ')
+      .map((word) => word.toLowerCase())
+      .join('-');
     req.propertyValue = headingStr;
 
     let fileName = '';
@@ -70,7 +95,11 @@ const storage = multer.diskStorage({
       }
     } else if (file.fieldname === 'bigimg' || file.fieldname === 'thumbnail') {
       fileName = headingStr + '_' + file.fieldname + `@${Date.now()}`;
-    } else if (file.fieldname === 'banner') {
+    } else if (
+      file.fieldname === 'banner' ||
+      file.fieldname === 'mapImg' ||
+      file.fieldname === 'planImg'
+    ) {
       fileName = headingStr + '_' + file.fieldname + `@${Date.now()}`;
     } else {
       fileName = file.fieldname + `-${Date.now()}`;

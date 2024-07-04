@@ -4,14 +4,14 @@ const mailer = require('../utils/sendMail');
 const sendSMS = require('../utils/sendSMS');
 
 const sendMessage = async (req, res) => {
-  const { name, phone, email, institute, message } = req.body;
-  if (name && email && institute && message) {
+  const { name, phone, email, address, message } = req.body;
+  if (name && phone && message) {
     await Contact.create({
       name,
-      phone: phone ? phone : null,
-      email,
+      phone,
+      email: email || null,
       message,
-      institute,
+      address: address || null,
     });
     res.json({ succeed: true, msg: 'Thank you. We have got your message' });
   } else {
@@ -20,13 +20,13 @@ const sendMessage = async (req, res) => {
 };
 
 const getAllMessage = async (req, res) => {
-  const messages = await Contact.findAll({});
+  const messages = await Contact.findAll({ order: [['id', 'DESC']] });
   res.json({ succeed: true, result: messages });
 };
 
 const sendEmailToClient = async (req, res) => {
   const mode = req.params.mode;
-  const { text, subject, email, name } = req.body;
+  const { text, subject, email, name, id } = req.body;
   if (!text) {
     throw new Error(`you didn't give any reply`);
   }
@@ -43,12 +43,15 @@ const sendEmailToClient = async (req, res) => {
           email: email,
         },
       },
-      'custom'
+      mode || 'custom'
     );
     if (mode === 'contact') {
-      await Contact.update({ replied: 1 }, { where: { email: email } });
+      await Contact.update(
+        { replied: 1, replyMsg: text },
+        { where: { id: id } }
+      );
     }
-    res.json({ succeed: true, msg: 'email sent' });
+    res.json({ succeed: true, msg: 'email sent', text });
   } catch (error) {
     throw new BadRequestError(error);
   }

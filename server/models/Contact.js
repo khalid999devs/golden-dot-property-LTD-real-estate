@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     message: {
       type: DataTypes.TEXT,
       allowNull: false,
+    },
+    replyMsg: {
+      type: DataTypes.TEXT,
     },
     replied: {
       type: DataTypes.BOOLEAN,

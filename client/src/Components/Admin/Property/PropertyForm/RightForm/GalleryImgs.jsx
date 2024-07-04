@@ -7,7 +7,13 @@ import { GoPlus } from 'react-icons/go';
 import { IoClose } from 'react-icons/io5';
 import { validFileWrapper } from '../../../../../Assets/requests';
 
-const GalleryImgs = ({ handleValChange, rightData, setAlert, mode }) => {
+const GalleryImgs = ({
+  handleValChange,
+  rightData,
+  setAlert,
+  mode,
+  handleDeleteImg,
+}) => {
   const [galleryInfo, setGalleryInfo] = useState({
     id: 0,
     thumbnail: {},
@@ -41,6 +47,7 @@ const GalleryImgs = ({ handleValChange, rightData, setAlert, mode }) => {
         return item.id !== img.id;
       });
       handleValChange('galleryImgs', newImgs);
+      handleDeleteImg('galleryImgs', img.id);
     }
   };
 

@@ -4,7 +4,7 @@ import { GoPlus } from 'react-icons/go';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
 import ImgFileUpload from '../../../../Utils/ImgFileUpload';
 
-const Location = ({ leftVals, setLeftVals, mode }) => {
+const Location = ({ leftVals, setLeftVals, mode, handleDeleteImg }) => {
   const [locaText, setLocaText] = useState('');
 
   const handleLocValChange = (name, value) => {
@@ -105,12 +105,13 @@ const Location = ({ leftVals, setLeftVals, mode }) => {
         <div className='p-2 min-h-[250px] md:min-h-[200px] h-full max-h-[300px]'>
           <ImgFileUpload
             type='single'
-            fileImg={leftVals.location?.mapImg}
+            fileImg={leftVals.location?.mapImg || {}}
             onLoad={(file) => {
               handleLocValChange('mapImg', file);
             }}
             clearFileImg={() => {
               handleLocValChange('mapImg', {});
+              handleDeleteImg('location');
             }}
             placeholderText={'Drop map Image'}
             dragActiveText={'Drop map Image here'}

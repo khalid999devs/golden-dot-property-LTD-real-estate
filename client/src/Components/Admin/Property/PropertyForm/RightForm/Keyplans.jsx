@@ -7,7 +7,13 @@ import { GoPlus } from 'react-icons/go';
 import { IoClose } from 'react-icons/io5';
 import { validFileWrapper } from '../../../../../Assets/requests';
 
-const Keyplans = ({ handleValChange, rightData, setAlert, mode }) => {
+const Keyplans = ({
+  handleValChange,
+  rightData,
+  setAlert,
+  mode,
+  handleDeleteImg,
+}) => {
   const [keyplanInfo, setKeyplanInfo] = useState({
     id: 0,
     title: '',
@@ -46,6 +52,7 @@ const Keyplans = ({ handleValChange, rightData, setAlert, mode }) => {
         return item.id !== plan.id;
       });
       handleValChange('keyPlans', newPlans);
+      handleDeleteImg('keyPlans', plan.id);
     }
   };
 
