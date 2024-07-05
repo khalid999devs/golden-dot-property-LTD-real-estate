@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LeftForm from './LeftForm/LeftForm';
 import RightForm from './RightForm/RightForm';
 import Alert from '../../../Utils/Alert';
@@ -22,10 +22,11 @@ const PropertyForm = ({ data }) => {
   });
   const [loading, setLoading] = useState(false);
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     if (data?.heading && !rightData.img?.name) {
+      setMode('edit');
       setRightData((rightData) => {
         return {
           ...rightData,
@@ -34,7 +35,6 @@ const PropertyForm = ({ data }) => {
           keyPlans: data.keyPlans,
         };
       });
-      setMode('edit');
     }
   }, [data]);
 
@@ -53,7 +53,7 @@ const PropertyForm = ({ data }) => {
   const handlePropertySubmit = ({ lData }) => {
     if (!lData?.heading || !lData?.category) {
       setAlert({
-        text: `heading or category must not be empty`,
+        text: `heading or category must be provided`,
         type: 'warning',
         state: true,
       });
@@ -67,9 +67,15 @@ const PropertyForm = ({ data }) => {
       });
       return;
     }
+    setLoading(true);
+    setPopup({
+      text: 'Submitting...',
+      type: 'normal',
+      state: true,
+    });
 
     let submitData = { ...lData, ...rightData };
-    console.log(submitData);
+    // console.log(submitData);
     delete submitData.value;
 
     const fd = new FormData();
@@ -104,7 +110,66 @@ const PropertyForm = ({ data }) => {
       fd.append('planImg', item.planImg, item.id);
     });
 
-    axios.post(reqs.ADD_PROPERTY, fd, { withCredentials: true });
+    axios
+      .post(reqs.ADD_PROPERTY, fd, { withCredentials: true })
+      .then((res) => {
+        setLoading(false);
+        setPopup({
+          text: res.data.msg,
+          type: 'success',
+          state: true,
+        });
+      })
+      .catch((err) => {
+        setLoading(false);
+        setPopup({
+          text:
+            err.response.data.msg || 'Something went wrong, please try again.',
+          type: 'error',
+          state: true,
+        });
+      });
+  };
+
+  const handleUpdateImg = (
+    upMode,
+    imgId,
+    imgItem = { replace: false, data: null, file: {} }
+  ) => {
+    // console.log('update called', mode);
+    if (mode === 'edit') {
+      const fd = new FormData();
+
+      fd.append('heading', data.heading);
+      fd.append('mode', upMode);
+      fd.append('imgId', imgId);
+      fd.append('imgItem', JSON.stringify(imgItem));
+      fd.append('propertyId', data.id);
+
+      if (imgItem?.file?.name) {
+        if (upMode === 'galleryImgs') {
+          fd.append('bigimg', imgItem.file, imgId);
+          fd.append('thumbnail', imgItem.thumbnail, imgId);
+        } else if (upMode === 'planImg') {
+          fd.append(upMode, imgItem.file, imgId);
+        } else {
+          fd.append(upMode, imgItem.file);
+        }
+      }
+
+      // console.log('fd');
+      axios
+        .put(reqs.UPDATE_PROPERTY_IMAGES, fd, { withCredentials: true })
+        .catch((err) => {
+          setPopup({
+            text:
+              err.response?.data?.msg ||
+              'Something wrong happened! please try again.',
+            type: 'error',
+            state: true,
+          });
+        });
+    }
   };
 
   const handleDeleteImg = (delMode, imgId) => {
@@ -135,6 +200,10 @@ const PropertyForm = ({ data }) => {
         handleDataReset={handleDataReset}
         mode={mode}
         handleDeleteImg={handleDeleteImg}
+        handleUpdateImg={handleUpdateImg}
+        setAlert={setAlert}
+        setPopup={setPopup}
+        setLoading={setLoading}
       />
       <RightForm
         rightData={rightData}
@@ -142,6 +211,7 @@ const PropertyForm = ({ data }) => {
         mode={mode}
         setAlert={setAlert}
         handleDeleteImg={handleDeleteImg}
+        handleUpdateImg={handleUpdateImg}
       />
       <Alert
         text={alert.text}

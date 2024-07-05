@@ -86,14 +86,18 @@ const Alert = ({
       style={{ transform: 'translate(-50%,0%)' }}
     >
       <p
-        className={`${
-          type === 'warning' ? 'text-text-main' : 'text-secondary-main'
+        className={`font-medium ${
+          type === 'warning'
+            ? 'text-text-main'
+            : type === 'error'
+            ? 'text-white'
+            : 'text-secondary-main'
         } ${textClasses}`}
       >
         {text || 'Alert text'}
       </p>
       <p
-        className='text-lg hover:text-primary-main duration-100'
+        className='text-lg hover:text-primary-main cursor-pointer duration-100'
         onClick={closeAlert}
       >
         {icon || <IoMdClose />}

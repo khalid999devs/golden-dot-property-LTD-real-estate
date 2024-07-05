@@ -34,6 +34,16 @@ const Videos = ({ leftVals, setLeftVals }) => {
     setVideos({ id: 0, title: '', url: '', thumbnail: '' });
   };
 
+  const deletePerVideo = (e, videoId) => {
+    e.preventDefault();
+    setLeftVals((leftVals) => {
+      return {
+        ...leftVals,
+        videos: leftVals.videos.filter((item) => item.id !== videoId),
+      };
+    });
+  };
+
   return (
     <div className='grid gap-1 mb-2'>
       <h4 className='text-sm font-bold opacity-90'>Videos:</h4>
@@ -88,7 +98,13 @@ const Videos = ({ leftVals, setLeftVals }) => {
       {leftVals.videos.length > 0 && (
         <div className='grid xs:grid-cols-2 sm:grid-cols-3 gap-2 mt-4 mb-3'>
           {leftVals.videos.map((item, key) => {
-            return <YoutubeCard item={item} key={key} />;
+            return (
+              <YoutubeCard
+                item={item}
+                key={key}
+                deletePerVideo={deletePerVideo}
+              />
+            );
           })}
         </div>
       )}

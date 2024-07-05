@@ -13,6 +13,7 @@ const GalleryImgs = ({
   setAlert,
   mode,
   handleDeleteImg,
+  handleUpdateImg,
 }) => {
   const [galleryInfo, setGalleryInfo] = useState({
     id: 0,
@@ -21,6 +22,16 @@ const GalleryImgs = ({
     url: {},
   });
   const [isMultiUpload, setIsMultiUpload] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+
+  const resetGalleryInfo = () => {
+    setGalleryInfo({
+      id: 0,
+      thumbnail: {},
+      title: '',
+      url: {},
+    });
+  };
 
   const handleGalleryInfoSubmit = (e) => {
     e.preventDefault();
@@ -32,13 +43,66 @@ const GalleryImgs = ({
       });
       return;
     }
+    const imgId = rightData.galleryImgs.length + 1 + '@' + Date.now();
     handleValChange('galleryImgs', [
       ...rightData.galleryImgs,
       {
         ...galleryInfo,
-        id: rightData.galleryImgs.length + 1 + '@' + Date.now(),
+        id: imgId,
       },
     ]);
+    handleUpdateImg('galleryImgs', imgId, {
+      replace: false,
+      data: { id: imgId, title: galleryInfo.title },
+      file: galleryInfo.url,
+      thumbnail: galleryInfo.thumbnail,
+    });
+  };
+
+  const replaceGalleryImage = () => {
+    if (typeof galleryInfo.url === 'object' && galleryInfo.url?.name) {
+      handleValChange(
+        'galleryImgs',
+        rightData.galleryImgs.map((item) => {
+          if (item.id === galleryInfo.id) {
+            return galleryInfo;
+          }
+          return item;
+        })
+      );
+      handleUpdateImg('galleryImgs', galleryInfo.id, {
+        replace: true,
+        data: { id: galleryInfo.id, title: galleryInfo.title },
+        file: galleryInfo.url,
+        thumbnail: galleryInfo.thumbnail,
+      });
+    } else if (
+      typeof galleryInfo.url === 'string' &&
+      galleryInfo.url?.length > 0
+    ) {
+      handleValChange(
+        'galleryImgs',
+        rightData.galleryImgs.map((item) => {
+          if (item.id === galleryInfo.id) {
+            return galleryInfo;
+          }
+          return item;
+        })
+      );
+      handleUpdateImg('galleryImgs', galleryInfo.id, {
+        replace: true,
+        data: { id: galleryInfo.id, title: galleryInfo.title },
+      });
+    } else {
+      setAlert({
+        text: 'Please Add an image first',
+        state: true,
+        type: 'warning',
+      });
+      return;
+    }
+    resetGalleryInfo();
+    setEditMode(false);
   };
 
   const removeTargetImg = (img) => {
@@ -125,6 +189,7 @@ const GalleryImgs = ({
                 isMultiUpload ? 'Images' : 'Image'
               } here`}
               thumbnail={true}
+              processText={'Compressing Image'}
             />
           </div>
         </div>
@@ -139,7 +204,7 @@ const GalleryImgs = ({
                 type={isMultiUpload ? 'multiple' : 'single'}
                 fileImg={
                   !isMultiUpload
-                    ? galleryInfo.url
+                    ? galleryInfo.url || {}
                     : rightData.galleryImgs[rightData.galleryImgs?.length - 1]
                         ?.url
                 }
@@ -148,7 +213,9 @@ const GalleryImgs = ({
                   onFileLoad(original, thumbnail, isMultiUpload)
                 }
                 clearFileImg={() => {
-                  setGalleryInfo({ id: 0, thumbnail: '', title: '', url: '' });
+                  setGalleryInfo((galleryInfo) => {
+                    return { ...galleryInfo, thumbnail: '', url: '' };
+                  });
                 }}
                 compress={{
                   state: true,
@@ -161,13 +228,37 @@ const GalleryImgs = ({
               />
             </div>
             <div className='w-full'>
-              <PrimaryButton
-                type={'submit'}
-                text={'Add'}
-                icon={<GoPlus className='text-lg text-primary-main' />}
-                classes={'bg-onPrimary-main text-primary-main !py-2 w-full'}
-                textClasses={'text-xs'}
-              />
+              {!editMode ? (
+                <PrimaryButton
+                  type={'submit'}
+                  text={'Add'}
+                  icon={<GoPlus className='text-lg text-primary-main' />}
+                  classes={'bg-onPrimary-main text-primary-main !py-2 w-full'}
+                  textClasses={'text-xs'}
+                />
+              ) : (
+                <div className='flex gap-1.5'>
+                  <PrimaryButton
+                    text={'Cancel'}
+                    classes={
+                      'bg-onPrimary-main !rounded-md text-primary-main !py-2 w-full'
+                    }
+                    onClick={() => {
+                      resetGalleryInfo();
+                      setEditMode(false);
+                    }}
+                    textClasses={'text-xs'}
+                  />
+                  <PrimaryButton
+                    text={'Update'}
+                    classes={
+                      'bg-onPrimary-main !rounded-md text-primary-main !py-2 w-full'
+                    }
+                    textClasses={'text-xs'}
+                    onClick={() => replaceGalleryImage()}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ) : (
@@ -182,20 +273,23 @@ const GalleryImgs = ({
           return (
             <div
               key={key}
-              className='h-[85px] relative group max-w-[95px] min-w-[50px] cursor-pointer'
+              className='h-[85px] relative group max-w-[95px] min-w-[50px]'
               style={{
                 flexBasis: '95px',
                 flexGrow: 1,
                 flexShrink: 1,
               }}
-              onClick={() => {
-                setGalleryInfo(item);
-              }}
             >
               <img
                 src={validFileWrapper(item.thumbnail)}
-                className='w-full h-full object-cover'
+                className='w-full h-full object-cover cursor-pointer'
                 alt={'thumbnail image'}
+                onClick={() => {
+                  setGalleryInfo(item);
+                  if (mode === 'edit') {
+                    setEditMode(true);
+                  }
+                }}
               />
               {item.title && (
                 <p className='absolute bottom-0 left-0 w-full p-1 !break-all bg-black bg-opacity-60 opacity-0 duration-300 group-hover:opacity-100 text-xs text-primary-light'>

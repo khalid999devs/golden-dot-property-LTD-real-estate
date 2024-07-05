@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ValuedInput from '../../../../Forms/ValuedInput';
 import { GoPlus } from 'react-icons/go';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
 import ImgFileUpload from '../../../../Utils/ImgFileUpload';
+import { MdDelete } from 'react-icons/md';
 
-const Location = ({ leftVals, setLeftVals, mode, handleDeleteImg }) => {
+const Location = ({
+  leftVals,
+  setLeftVals,
+  mode,
+  handleDeleteImg,
+  handleUpdateImg,
+}) => {
   const [locaText, setLocaText] = useState('');
+  const [isLocImgUpdated, setIsLocImgUpdated] = useState(false);
 
   const handleLocValChange = (name, value) => {
+    if (name === 'mapImg' && value.name) setIsLocImgUpdated(true);
     setLeftVals((leftVals) => {
       return {
         ...leftVals,
@@ -18,6 +27,15 @@ const Location = ({ leftVals, setLeftVals, mode, handleDeleteImg }) => {
       };
     });
   };
+
+  useEffect(() => {
+    if (isLocImgUpdated) {
+      handleUpdateImg('mapImg', null, {
+        file: leftVals.location.mapImg,
+      });
+      setIsLocImgUpdated(false);
+    }
+  }, [isLocImgUpdated]);
 
   const handleLocTextSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +49,18 @@ const Location = ({ leftVals, setLeftVals, mode, handleDeleteImg }) => {
       };
     });
     setLocaText('');
+  };
+
+  const deletePerLocText = (targetText) => {
+    setLeftVals((leftVals) => {
+      return {
+        ...leftVals,
+        location: {
+          ...leftVals.location,
+          texts: leftVals.location.texts.filter((item) => item !== targetText),
+        },
+      };
+    });
   };
 
   return (
@@ -91,10 +121,19 @@ const Location = ({ leftVals, setLeftVals, mode, handleDeleteImg }) => {
                 return (
                   <div
                     key={index}
-                    className='flex flex-1 items-center pt-.5 pp-regular !font-[300] text-sm'
+                    className='flex flex-1 justify-between gap-3 items-center pt-.5 pp-regular !font-[300] text-sm hover:border-b-onPrimary-main hover:border-b-[1px] hover:border-opacity-55 group'
                   >
-                    {index + 1}. &nbsp;
-                    <span>{text}</span>
+                    <div>
+                      {index + 1}. &nbsp;
+                      <span>{text}</span>
+                    </div>
+
+                    <div
+                      className='cursor-pointer opacity-0 transition-all duration-300 group-hover:opacity-100'
+                      onClick={() => deletePerLocText(text)}
+                    >
+                      <MdDelete className='text-lg text-onPrimary-main' />
+                    </div>
                   </div>
                 );
               })}

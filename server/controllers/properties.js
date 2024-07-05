@@ -207,6 +207,189 @@ const deletePropertyImages = async (req, res) => {
   });
 };
 
+const updatePropertyImages = async (req, res) => {
+  let { mode, imgId, imgItem, propertyId } = req.body;
+  imgItem = JSON.parse(imgItem);
+  // console.log(req.body);
+  let property = await properties.findOne({
+    attributes: ['id', 'img', 'galleryImgs', 'keyPlans', 'location'],
+    where: { id: propertyId },
+  });
+
+  if (req.files) {
+    const uploadedFiles = req.files;
+
+    if (mode === 'banner' && uploadedFiles.banner?.length > 0) {
+      if (property.img) deleteFile(property.img);
+      property.img = uploadedFiles.banner[0].path;
+    } else if (mode === 'planImg') {
+      let dataKeyplans = property.keyPlans ? JSON.parse(property.keyPlans) : [];
+
+      if (uploadedFiles.planImg?.length > 0) {
+        const objIdPlanImgs = fromArrayToObjId(
+          uploadedFiles.planImg,
+          'originalname'
+        );
+
+        if (!imgItem.replace)
+          dataKeyplans.push({
+            ...imgItem.data,
+            planImg: objIdPlanImgs[imgId].path,
+            serverImg: objIdPlanImgs[imgId],
+          });
+        else {
+          dataKeyplans.forEach((item) => {
+            if (item.id === imgId) {
+              deleteFile(item.planImg);
+              item.title = imgItem.data.title;
+              item.planImg = objIdPlanImgs[imgId].path;
+              item.serverImg = objIdPlanImgs[imgId];
+            }
+          });
+        }
+      } else {
+        dataKeyplans.forEach((item) => {
+          if (item.id === imgId && imgItem.replace) {
+            item.title = imgItem.data.title;
+          }
+        });
+      }
+
+      property.keyPlans = JSON.stringify(dataKeyplans);
+    } else if (mode === 'galleryImgs') {
+      let dataGalleryImgs = property.galleryImgs
+        ? JSON.parse(property.galleryImgs)
+        : [];
+
+      if (uploadedFiles.bigimg?.length > 0) {
+        const objIdBigImgs = fromArrayToObjId(
+          uploadedFiles.bigimg,
+          'originalname'
+        );
+        const objIdThumbnail = fromArrayToObjId(
+          uploadedFiles.thumbnail,
+          'originalname'
+        );
+
+        if (!imgItem.replace) {
+          dataGalleryImgs.push({
+            ...imgItem.data,
+            url: objIdBigImgs[imgId].path,
+            thumbnail: objIdThumbnail[imgId].path,
+            serverImg: {
+              bigImg: objIdBigImgs[imgId],
+              thumbnail: objIdThumbnail[imgId],
+            },
+          });
+        } else {
+          dataGalleryImgs.forEach((item) => {
+            if (item.id === imgId) {
+              deleteFile(item.url);
+              deleteFile(item.thumbnail);
+              item.title = imgItem.data.title;
+              item.url = objIdBigImgs[imgId].path;
+              item.thumbnail = objIdThumbnail[imgId].path;
+              item.serverImg = {
+                bigImg: objIdBigImgs[imgId],
+                thumbnail: objIdThumbnail[imgId],
+              };
+            }
+          });
+        }
+      } else {
+        dataGalleryImgs.forEach((item) => {
+          if (item.id === imgId && imgItem.replace) {
+            item.title = imgItem.data.title;
+          }
+        });
+      }
+
+      property.galleryImgs = JSON.stringify(dataGalleryImgs);
+    } else if (mode === 'mapImg' && uploadedFiles.mapImg?.length > 0) {
+      let dataLocation = property.location ? JSON.parse(property.location) : {};
+      if (dataLocation.mapImg) deleteFile(dataLocation.mapImg);
+      dataLocation.mapImg = uploadedFiles.mapImg[0].path;
+      dataLocation.serverImg = uploadedFiles.mapImg[0];
+      property.location = JSON.stringify(dataLocation);
+    } else {
+      throw new BadRequestError(`Wrong mode value entered! [${mode}]`);
+    }
+  }
+
+  // console.log(property.img);
+  await property.save();
+
+  res.json({
+    succeed: true,
+    msg: 'Successfully updated image!',
+  });
+};
+
+const updatePropertyData = async (req, res) => {
+  const data = req.body;
+  const propertyId = req.params.id;
+  let property = await properties.findOne({
+    attributes: ['location'],
+    where: { id: propertyId },
+  });
+  let propertyLoc = JSON.parse(property.location);
+  const updateData = {
+    heading: data.heading,
+    subText: data.subText,
+    category: JSON.stringify(data.category),
+    projectInfos: JSON.stringify(data.projectInfos),
+    features: JSON.stringify(data.features),
+    videos: JSON.stringify(data.videos),
+    virtualTourVideo: JSON.stringify(data.virtualTourVideo),
+    location: JSON.stringify({
+      texts: data.location.texts,
+      gMap: data.location.gMap,
+      mapImg: propertyLoc.mapImg,
+      serverImg: propertyLoc.serverImg,
+    }),
+  };
+
+  await properties.update({ ...updateData }, { where: { id: propertyId } });
+
+  res.json({
+    succeed: true,
+    msg: 'Successfully Updated!',
+  });
+};
+
+const deleteProperty = async (req, res) => {
+  const propertyId = req.params.id;
+  let property = await properties.findOne({
+    where: {
+      id: propertyId,
+    },
+  });
+
+  if (property.img) deleteFile(property.img);
+  const propertyLocation = property.location
+    ? JSON.parse(property.location)
+    : {};
+  if (propertyLocation.mapImg) deleteFile(propertyLocation.mapImg);
+  const galleryImgs = property.galleryImgs
+    ? JSON.parse(property.galleryImgs)
+    : [];
+  galleryImgs.forEach((item) => {
+    if (item.thumbnail) deleteFile(item.thumbnail);
+    if (item.url) deleteFile(item.url);
+  });
+  const keyPlans = property.keyPlans ? JSON.parse(property.keyPlans) : [];
+  keyPlans.forEach((item) => {
+    if (item.planImg) deleteFile(item.planImg);
+  });
+
+  await property.destroy();
+
+  res.json({
+    succeed: true,
+    msg: 'Successfully Deleted!',
+  });
+};
+
 module.exports = {
   createProperty,
   getAllProperties,
@@ -214,4 +397,7 @@ module.exports = {
   getSingleCardProperty,
   getAllPropertiesLabel,
   deletePropertyImages,
+  updatePropertyImages,
+  updatePropertyData,
+  deleteProperty,
 };

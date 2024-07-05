@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { handleCompressImg } from './ImageCompression';
 import { IoImageOutline } from 'react-icons/io5';
@@ -8,6 +8,7 @@ import { reqFileWrapper, validFileWrapper } from '../../Assets/requests';
 import { IoClose } from 'react-icons/io5';
 
 const ImgFileUpload = ({
+  mode,
   dragActiveText,
   fileImg,
   onLoad,
@@ -20,11 +21,14 @@ const ImgFileUpload = ({
   thumbnail = false,
   textClasses,
   defaultImg,
+  processText,
 }) => {
   const fileInputRef = useRef();
+  const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach(async (file) => {
+      setLoading(true);
       const reader = new FileReader();
 
       reader.onabort = () => console.log('file reading was aborted');
@@ -49,6 +53,7 @@ const ImgFileUpload = ({
         } else {
           onLoad(file);
         }
+        setLoading(false);
       };
       reader.readAsArrayBuffer(file);
     });
@@ -137,13 +142,28 @@ const ImgFileUpload = ({
           </p>
         </div>
         <div
-          className={`absolute top-[50%] left-[50%] text-onPrimary-main bg-secondary-main rounded-lg w-[97%] h-[95%] text-lg font-medium ${
+          className={`absolute top-[50%] left-[50%] text-onPrimary-main bg-secondary-main rounded-lg w-[97%] h-[95%] text-lg md:text-sm font-medium text-center p-3 ${
             isDragActive ? 'flex' : 'hidden'
           } justify-center items-center text-md`}
           style={{ transform: 'translate(-50%,-50%)' }}
         >
           {dragActiveText || 'Drop files here'}
         </div>
+        {loading && (
+          <div
+            className={`absolute top-[50%] left-[50%] text-onPrimary-main bg-primary-main bg-opacity-95 rounded-lg w-[97%] h-[95%] text-lg font-medium flex flex-col justify-center items-center text-md text-center p-3`}
+            style={{ transform: 'translate(-50%,-50%)' }}
+          >
+            <img
+              src='/Images/loading.gif'
+              className='w-[25px] h-[25px]'
+              alt='Loading...'
+            />
+            <p className='text-xs text-tertiary-main font-medium break-words'>
+              {processText || 'Processing Image'}
+            </p>
+          </div>
+        )}
       </div>
     );
   }

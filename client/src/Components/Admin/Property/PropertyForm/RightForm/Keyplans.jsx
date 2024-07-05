@@ -13,6 +13,7 @@ const Keyplans = ({
   setAlert,
   mode,
   handleDeleteImg,
+  handleUpdateImg,
 }) => {
   const [keyplanInfo, setKeyplanInfo] = useState({
     id: 0,
@@ -20,6 +21,15 @@ const Keyplans = ({
     planImg: {},
   });
   const [isCompress, setIsCompress] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+
+  const resetKeyPlanInfo = () => {
+    setKeyplanInfo({
+      id: 0,
+      title: '',
+      planImg: {},
+    });
+  };
 
   const handleKeyplansInfoSubmit = (e) => {
     e.preventDefault();
@@ -31,19 +41,22 @@ const Keyplans = ({
       });
       return;
     }
+    const imgId = rightData.keyPlans.length + 1 + '@' + Date.now();
     handleValChange('keyPlans', [
       ...rightData.keyPlans,
       {
         ...keyplanInfo,
-        id: rightData.keyPlans.length + 1 + '@' + Date.now(),
+        id: imgId,
       },
     ]);
 
-    setKeyplanInfo({
-      id: 0,
-      title: '',
-      planImg: {},
+    handleUpdateImg('planImg', imgId, {
+      replace: false,
+      data: { id: imgId, title: keyplanInfo.title },
+      file: keyplanInfo.planImg,
     });
+
+    resetKeyPlanInfo();
   };
 
   const removeTargetPlan = (plan) => {
@@ -63,6 +76,51 @@ const Keyplans = ({
         planImg: file,
       };
     });
+  };
+
+  const replaceKeyPlanImages = () => {
+    if (typeof keyplanInfo.planImg === 'object' && keyplanInfo.planImg?.name) {
+      handleValChange(
+        'keyPlans',
+        rightData.keyPlans.map((item) => {
+          if (item.id === keyplanInfo.id) {
+            return keyplanInfo;
+          }
+          return item;
+        })
+      );
+      handleUpdateImg('planImg', keyplanInfo.id, {
+        replace: true,
+        data: { id: keyplanInfo.id, title: keyplanInfo.title },
+        file: keyplanInfo.planImg,
+      });
+    } else if (
+      typeof keyplanInfo.planImg === 'string' &&
+      keyplanInfo.planImg?.length > 0
+    ) {
+      handleValChange(
+        'keyPlans',
+        rightData.keyPlans.map((item) => {
+          if (item.id === keyplanInfo.id) {
+            return keyplanInfo;
+          }
+          return item;
+        })
+      );
+      handleUpdateImg('planImg', keyplanInfo.id, {
+        replace: true,
+        data: { id: keyplanInfo.id, title: keyplanInfo.title },
+      });
+    } else {
+      setAlert({
+        text: 'Please Add an image first',
+        state: true,
+        type: 'warning',
+      });
+      return;
+    }
+    resetKeyPlanInfo();
+    setEditMode(false);
   };
 
   return (
@@ -86,7 +144,7 @@ const Keyplans = ({
           <div className='w-full min-h-[180px] h-auto max-h-[300px]'>
             <ImgFileUpload
               type={'single'}
-              fileImg={keyplanInfo.planImg}
+              fileImg={keyplanInfo.planImg || {}}
               onLoad={(file) => onFileLoad(file)}
               compress={{
                 state: isCompress,
@@ -112,13 +170,37 @@ const Keyplans = ({
                 name: 'title',
               }}
             />
-            <PrimaryButton
-              type={'submit'}
-              text={'Add'}
-              icon={<GoPlus className='text-lg text-primary-main' />}
-              classes={'bg-onPrimary-main text-primary-main !py-2 w-full'}
-              textClasses={'text-xs'}
-            />
+            {!editMode ? (
+              <PrimaryButton
+                type={'submit'}
+                text={'Add'}
+                icon={<GoPlus className='text-lg text-primary-main' />}
+                classes={'bg-onPrimary-main text-primary-main !py-2 w-full'}
+                textClasses={'text-xs'}
+              />
+            ) : (
+              <div className='flex gap-1.5'>
+                <PrimaryButton
+                  text={'Cancel'}
+                  classes={
+                    'bg-onPrimary-main !rounded-md text-primary-main !py-2 w-max'
+                  }
+                  onClick={() => {
+                    resetKeyPlanInfo();
+                    setEditMode(false);
+                  }}
+                  textClasses={'!text-xs'}
+                />
+                <PrimaryButton
+                  text={'Update'}
+                  classes={
+                    'bg-onPrimary-main !rounded-md text-primary-main !py-2 w-max'
+                  }
+                  textClasses={'!text-xs'}
+                  onClick={() => replaceKeyPlanImages()}
+                />
+              </div>
+            )}
           </div>
         </div>
       </form>
@@ -128,15 +210,18 @@ const Keyplans = ({
           return (
             <div
               key={key}
-              className='h-auto max-h-[135px] relative group rounded-lg cursor-pointer'
-              onClick={() => {
-                setKeyplanInfo(item);
-              }}
+              className='h-auto max-h-[135px] relative group rounded-lg'
             >
               <img
                 src={validFileWrapper(item.planImg)}
-                className='w-full h-full object-cover'
+                className='w-full h-full object-cover cursor-pointer'
                 alt={'thumbnail image'}
+                onClick={() => {
+                  setKeyplanInfo(item);
+                  if (mode === 'edit') {
+                    setEditMode(true);
+                  }
+                }}
               />
               {item.title && (
                 <p className='absolute bottom-0 left-0 w-full p-1 !break-all bg-black bg-opacity-60 opacity-0 duration-300 group-hover:opacity-100 text-xs text-primary-light'>
@@ -145,6 +230,7 @@ const Keyplans = ({
               )}
               <div
                 className='absolute right-[3%] top-[3%] bg-black bg-opacity-60 text-primary-main text-md duration-500 group-hover:bg-opacity-80 w-[22px] h-[22px] rounded-full hidden group-hover:flex items-center justify-center cursor-pointer'
+                id='plan-close'
                 onClick={() => removeTargetPlan(item)}
               >
                 <IoClose />

@@ -28,7 +28,7 @@ const AdminLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
+
     if (data.userName && data.password) {
       axios
         .post(reqs.ADMIN_LOGIN, data, { withCredentials: true })

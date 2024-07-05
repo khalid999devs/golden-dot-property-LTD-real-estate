@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ImgFileUpload from '../../../../Utils/ImgFileUpload';
 import Checkbox from '../../../../Forms/Checkbox';
 import GalleryImgs from './GalleryImgs';
@@ -10,16 +10,26 @@ const RightForm = ({
   setAlert,
   mode,
   handleDeleteImg,
+  handleUpdateImg,
 }) => {
   const [isBannerComp, setIsBannerComp] = useState(false);
+  const [isBannerUpdate, setIsBannerUpdate] = useState(false);
 
   const handleValChange = (name, value) => {
+    if (name === 'img' && value.name) setIsBannerUpdate(true);
     setRightData((rightData) => {
       return { ...rightData, [name]: value };
     });
   };
 
-  console.log(rightData);
+  useEffect(() => {
+    if (isBannerUpdate) {
+      handleUpdateImg('banner', null, {
+        file: rightData.img,
+      });
+      setIsBannerUpdate(false);
+    }
+  }, [isBannerUpdate]);
 
   return (
     <div>
@@ -39,6 +49,7 @@ const RightForm = ({
 
           <div className='w-full min-h-[260px] md:min-h-[350px] lg:min-h-[250px] h-full max-h-[30s0px]'>
             <ImgFileUpload
+              mode={mode}
               type='single'
               fileImg={rightData?.img || {}}
               onLoad={(file) => {
@@ -66,6 +77,7 @@ const RightForm = ({
           handleValChange={handleValChange}
           rightData={rightData}
           handleDeleteImg={handleDeleteImg}
+          handleUpdateImg={handleUpdateImg}
         />
 
         {/* keyPlans */}
@@ -75,6 +87,7 @@ const RightForm = ({
           handleValChange={handleValChange}
           rightData={rightData}
           handleDeleteImg={handleDeleteImg}
+          handleUpdateImg={handleUpdateImg}
         />
       </div>
     </div>

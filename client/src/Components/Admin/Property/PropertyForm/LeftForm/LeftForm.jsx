@@ -10,6 +10,8 @@ import VirtualTourVideo from './VirtualTourVideo';
 import Location from './Location';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import reqs from '../../../../../Assets/requests';
 
 const LeftForm = ({
   leftData,
@@ -17,6 +19,10 @@ const LeftForm = ({
   handleDataReset,
   mode,
   handleDeleteImg,
+  handleUpdateImg,
+  setAlert,
+  setPopup,
+  setLoading,
 }) => {
   const naviagte = useNavigate();
 
@@ -60,6 +66,45 @@ const LeftForm = ({
     });
   };
 
+  const updatePropertyData = () => {
+    if (!leftVals?.heading || !leftVals?.category) {
+      setAlert({
+        text: `heading or category must be provided`,
+        type: 'warning',
+        state: true,
+      });
+      return;
+    }
+
+    setLoading(true);
+    setPopup({
+      text: 'Updating...',
+      type: 'normal',
+      state: true,
+    });
+    axios
+      .put(`${reqs.UPDATE_PROPERTY_DATA}/${leftData.id}`, leftVals, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setLoading(false);
+        setPopup({
+          text: res.data.msg,
+          type: 'success',
+          state: true,
+        });
+      })
+      .catch((err) => {
+        setLoading(false);
+        setPopup({
+          text:
+            err.response.data.msg || 'Something went wrong, please try again.',
+          type: 'error',
+          state: true,
+        });
+      });
+  };
+
   const handleFullReset = () => {
     handleDataReset();
     if (leftData?.heading) {
@@ -93,6 +138,51 @@ const LeftForm = ({
     }
   };
 
+  const handleDeleteProperty = () => {
+    const userValidate = prompt(
+      `Please enter "${leftData.heading}" to delete it: `
+    );
+
+    if (userValidate === leftData.heading) {
+      setLoading(true);
+      setPopup({
+        text: 'Deleting...',
+        type: 'normal',
+        state: true,
+      });
+      axios
+        .delete(`${reqs.DELETE_PROPERTY}/${leftData.id}`)
+        .then((res) => {
+          setLoading(false);
+          setPopup({
+            text: res.data.msg,
+            type: 'success',
+            state: true,
+          });
+
+          if (res.data.succeed) {
+            naviagte('/admin/properties');
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          setPopup({
+            text:
+              err.response.data.msg ||
+              'Something went wrong, please try again.',
+            type: 'error',
+            state: true,
+          });
+        });
+    } else {
+      setAlert({
+        text: 'Please Enter the Correct text to delete!',
+        type: 'error',
+        state: true,
+      });
+    }
+  };
+
   return (
     <div>
       <div className='bg-primary-light p-3 pb-6 flex flex-col gap-3 rounded-lg !break-all'>
@@ -113,6 +203,7 @@ const LeftForm = ({
           <OptionField
             id={'category'}
             label={'Category:'}
+            value={leftVals.category?.value}
             name={'category'}
             setValue={(e) => {
               setLeftVals((leftVals) => {
@@ -162,6 +253,7 @@ const LeftForm = ({
           setLeftVals={setLeftVals}
           mode={mode}
           handleDeleteImg={handleDeleteImg}
+          handleUpdateImg={handleUpdateImg}
         />
       </div>
 
@@ -179,7 +271,7 @@ const LeftForm = ({
                 handlePropertySubmit({ lData: leftVals });
               }}
             />
-            <PrimaryButton
+            {/* <PrimaryButton
               text={'Save as Draft'}
               classes={
                 'bg-onPrimary-main text-primary-main !px-2 md:!px-4 !py-1.5 md:!py-2.5'
@@ -188,19 +280,29 @@ const LeftForm = ({
               onClick={() => {
                 console.log('draft saved');
               }}
-            />
+            /> */}
           </div>
         ) : (
-          <PrimaryButton
-            text={'Save'}
-            classes={
-              'bg-onPrimary-main text-primary-main !px-2 md:!px-4 !py-1.5 md:!py-2.5'
-            }
-            textClasses={'text-xs md:text-sm'}
-            onClick={() => {
-              console.log('editing saved');
-            }}
-          />
+          <div className='flex gap-4'>
+            <PrimaryButton
+              text={'Update'}
+              classes={
+                'bg-onPrimary-main text-primary-main !px-2 md:!px-4 !py-1.5 md:!py-2.5'
+              }
+              textClasses={'text-xs md:text-sm'}
+              onClick={() => {
+                updatePropertyData();
+              }}
+            />
+            <PrimaryButton
+              text={'Delete'}
+              classes={
+                'bg-red-700 text-primary-light !px-2 md:!px-4 !py-1.5 md:!py-2.5'
+              }
+              textClasses={'text-xs md:text-sm'}
+              onClick={handleDeleteProperty}
+            />
+          </div>
         )}
 
         <div className='flex gap-4'>

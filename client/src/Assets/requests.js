@@ -34,7 +34,10 @@ const reqs = {
   GET_ALL_PROPERTY_LABELS: '/api/property/labels',
   GET_SINGLE_PROPERTY: '/api/property/single',
   GET_SINGLE_CARD_PROPERTY: '/api/property/card',
+  UPDATE_PROPERTY_IMAGES: '/api/property/updateImg',
+  UPDATE_PROPERTY_DATA: '/api/property/data-update',
   DELETE_PROPERTY_IMAGES: '/api/property/delete',
+  DELETE_PROPERTY: '/api/property/delete-property',
 
   //contact
   SEND_MESSAGE_FROM_CLIENT: '/api/contact/sendMessage',

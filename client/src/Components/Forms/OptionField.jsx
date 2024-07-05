@@ -1,6 +1,7 @@
 const OptionField = ({
   id,
   label,
+  value,
   setValue,
   optionsObjs,
   name,
@@ -20,6 +21,7 @@ const OptionField = ({
       <select
         name={name}
         id={id}
+        value={value}
         className={
           'mt-1 pl-2 p-1 text-sm b-none rounded-sm appearance-none bg-onPrimary-main text-white cursor-pointer w-full outline-none ' +
           selectClass

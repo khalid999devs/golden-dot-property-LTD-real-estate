@@ -39,6 +39,15 @@ const Features = ({ leftVals, setLeftVals }) => {
     setFeatures({ id: 0, title: '', features: [] });
   };
 
+  const deleteFeatureById = (featureId) => {
+    setLeftVals((leftVals) => {
+      return {
+        ...leftVals,
+        features: leftVals.features.filter((item) => item.id !== featureId),
+      };
+    });
+  };
+
   return (
     <div className='grid gap-1 mt-1'>
       <h4 className='text-sm font-bold opacity-90'>Features & Amenities:</h4>
@@ -146,7 +155,13 @@ const Features = ({ leftVals, setLeftVals }) => {
             </div>
           )}
           {leftVals.features.map((item, key) => {
-            return <SingleFeature feature={item} key={key} />;
+            return (
+              <SingleFeature
+                deleteFeatureById={deleteFeatureById}
+                feature={item}
+                key={key}
+              />
+            );
           })}
         </div>
       </div>

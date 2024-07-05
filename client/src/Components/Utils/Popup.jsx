@@ -72,7 +72,7 @@ const Popup = ({
       ref={alertRef}
       className={`p-4 px-5 hidden flex-col items-center justify-between gap-4 min-h-[200px] max-w-[400px] w-full ${
         type === 'success'
-          ? 'bg-green-700'
+          ? 'bg-green-600'
           : type === 'error'
           ? 'bg-red-700'
           : type === 'warning'

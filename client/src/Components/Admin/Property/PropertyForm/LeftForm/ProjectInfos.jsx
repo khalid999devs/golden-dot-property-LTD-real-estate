@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ValuedInput from '../../../../Forms/ValuedInput';
 import PrimaryButton from '../../../../Buttons/PrimaryButton';
+import { MdDelete } from 'react-icons/md';
 
 const ProjectInfos = ({ setLeftVals, leftVals }) => {
   const [projectInfos, setProjectInfos] = useState({
@@ -30,6 +31,14 @@ const ProjectInfos = ({ setLeftVals, leftVals }) => {
       };
     });
     setProjectInfos({ id: 0, title: '', value: '' });
+  };
+  const deletePerProjectInfo = (id) => {
+    setLeftVals((leftVals) => {
+      return {
+        ...leftVals,
+        projectInfos: leftVals.projectInfos.filter((item) => item.id !== id),
+      };
+    });
   };
 
   return (
@@ -75,19 +84,27 @@ const ProjectInfos = ({ setLeftVals, leftVals }) => {
             />
           </div>
         </form>
-        <div className='mt-4 px-2 grid grid-cols-1 sm:grid-cols-2 gap-2'>
+        <div className='mt-4 px-2 grid grid-cols-1 sm:grid-cols-2 gap-2 gap-x-4'>
           {leftVals?.projectInfos.map((item, index) => {
             return (
               <div
                 key={index}
-                className='flex gap-1 items-center pt-1 pp-regular !font-[300] text-sm'
+                className='flex gap-2 justify-between items-center pt-1 pp-regular !font-[300] text-sm  hover:border-b-onPrimary-main hover:border-b-[1px] hover:border-opacity-55 group'
                 id={item.id || index + 1}
               >
-                {index + 1}. &nbsp;
-                <span className='font-[600] opacity-80'>
-                  {item.title}: &nbsp;
-                </span>
-                <span>{item.value}</span>
+                <div className='flex gap-1 items-center'>
+                  {index + 1}. &nbsp;
+                  <span className='font-[600] opacity-80'>
+                    {item.title}: &nbsp;
+                  </span>
+                  <span>{item.value}</span>
+                </div>
+                <div
+                  className='cursor-pointer opacity-0 transition-all duration-300 group-hover:opacity-100'
+                  onClick={() => deletePerProjectInfo(item.id)}
+                >
+                  <MdDelete className='text-lg text-onPrimary-main' />
+                </div>
               </div>
             );
           })}
