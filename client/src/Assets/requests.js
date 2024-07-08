@@ -27,6 +27,7 @@ const reqs = {
 
   //clients
   BOOK_CLIENT: '/api/client/reg',
+  ALL_ANALYTICS: '/api/client/analytics',
 
   // properties
   ADD_PROPERTY: '/api/property/add',

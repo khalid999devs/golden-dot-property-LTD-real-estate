@@ -6,18 +6,18 @@ const htmlCreator = (mode, data) => {
   let client = data.client;
 
   if (mode === 'booking') {
-    subject = `Registration Successful!`;
-    body = `
-    <h2 style="color:green;">Congratulations!! Your registration is successful</h2>
-    `;
+    subject = `Appointment booking Successful!`;
+    body = `<p style="color: #3A1500; margin: 0;">Dear ${client.fullName},</p>
+            <p style="color: #097c26; margin: 20px 0;">Your appointment booking for <strong>${data.property.heading}</strong> is successful! We will contact with you soon.</p>`;
   } else if (mode === 'contact') {
     subject = `We are here for you!`;
-    body = `
-       <p>Dear ${client.fullName}, ${data.info.body}</p>
+    body = `<p style="color: #3A1500; margin: 0;">Dear ${client.fullName},</p>
+       <p style="color: #3A1500; margin: 20px 0;">${data.info.body}</p>
     `;
   } else if (mode === 'custom') {
     subject = subject;
-    body = data.info.body;
+    body = `<p style="color: #3A1500; margin: 0;">Dear ${client.fullName},</p>
+    <p style="color: #3A1500; margin: 20px 0;">${data.info.body}</p>`;
   }
 
   return { subject, body, text };

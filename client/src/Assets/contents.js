@@ -11,16 +11,16 @@ export const sliderContent = [
 ];
 
 export const imageContent = [
-  'https://images.pexels.com/photos/392031/pexels-photo-392031.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/8159/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/159358/construction-site-build-construction-work-159358.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/2449785/pexels-photo-2449785.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/783966/pexels-photo-783966.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/3680959/pexels-photo-3680959.jpeg?auto=compress&cs=tinysrgb&w=600',
+  '/Images/slider/one.jpeg',
+  '/Images/slider/two.webp',
+  '/Images/slider/three.jpeg',
+  '/Images/slider/four.jpeg',
+  '/Images/slider/five.jpeg',
+  '/Images/slider/six.jpeg',
+  '/Images/slider/seven.jpeg',
+  '/Images/slider/eight.jpeg',
+  '/Images/slider/nine.jpeg',
+  '/Images/slider/ten.webp',
 ];
 
 export const cardInfos = [
@@ -44,5 +44,44 @@ export const cardInfos = [
     value: 'new-land-project-1',
     subText: 'Residential project, Basundhara Riverview',
     category: { value: 'landshares', title: 'Landshares' },
+  },
+];
+
+export const aboutCards = [
+  {
+    name: 'Liakat Hossain Sumon',
+    designation: 'Managing Director',
+    pic: '/Images/about/Sumon.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Md Rafiqul Islam',
+    designation: 'Chairman',
+    pic: '/Images/about/Rafiq.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Md Kamrul Islam',
+    designation: 'Director',
+    pic: '/Images/about/Kamrul.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Executive Name',
+    designation: 'Executive Director',
+    pic: '/Images/about/Rafiq.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Executive Name',
+    designation: 'Executive Director',
+    pic: '/Images/about/Rafiq.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Executive Name',
+    designation: 'Executive Director',
+    pic: '/Images/about/Rafiq.jpg',
+    otherInfos: {},
   },
 ];

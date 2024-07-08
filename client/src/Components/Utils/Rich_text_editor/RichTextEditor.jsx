@@ -5,6 +5,8 @@ import {
   RichUtils,
   convertToRaw,
   Modifier,
+  convertFromHTML,
+  ContentState,
 } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'draft-js/dist/Draft.css';
@@ -19,14 +21,22 @@ import { MdFormatListBulleted, MdFormatListNumbered } from 'react-icons/md';
 import { AiOutlineFontColors } from 'react-icons/ai';
 import './RichTextEditor.css'; // Custom CSS for editor styling
 
-export function RichTextEditor() {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+export function RichTextEditor({
+  defaultText = 'This feature will be available soon.',
+}) {
+  // Convert default text to content state
+  const contentState = defaultText
+    ? ContentState.createFromBlockArray(convertFromHTML(defaultText))
+    : ContentState.createFromText('');
+
+  const [editorState, setEditorState] = useState(
+    EditorState.createWithContent(contentState)
+  );
   const editor = useRef(null);
 
   const focusEditor = () => {
     editor.current.focus();
   };
-
   useEffect(() => {
     focusEditor();
   }, []);

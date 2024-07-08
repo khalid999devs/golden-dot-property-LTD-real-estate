@@ -1,7 +1,6 @@
 import { FaFacebook, FaYoutube } from 'react-icons/fa';
 import { FiPhone } from 'react-icons/fi';
 import { BiLogoGmail } from 'react-icons/bi';
-import { CgMail } from 'react-icons/cg';
 
 import { FaAddressBook } from 'react-icons/fa6';
 import { MdDashboard } from 'react-icons/md';
@@ -56,18 +55,18 @@ export const socialLinks = [
   {
     name: 'Facebook',
     icon: FaFacebook,
-    link: 'https://facebook.com',
+    link: 'https://www.facebook.com/profile.php?id=61551261113608',
   },
   {
     name: 'Youtube',
     icon: FaYoutube,
-    link: 'https://youtube.com',
+    link: 'https://www.youtube.com/@gdpblbd',
   },
   {
     name: 'Email',
     type: 'email',
     icon: BiLogoGmail,
-    link: 'goldendot@gmail.com',
+    link: 'goldendotpbl@gmail.com',
   },
 ];
 
@@ -75,16 +74,16 @@ export const contactInfo = [
   {
     type: 'phone',
     icon: FiPhone,
-    value: '01XXXXXXXXX',
+    value: '01755-500582',
   },
   {
     type: 'email',
     icon: BiLogoGmail,
-    value: 'goldendot@gmail.com',
+    value: 'goldendotpbl@gmail.com',
   },
 ];
 
-export const hotlines = ['01755-500582', '01771-470882'];
+export const hotlines = ['01755-500582', '01716-933161', '01715-297257'];
 // export const navPhones = ['017550-500582', '01771-470882'];
 
 export const officeIframe =

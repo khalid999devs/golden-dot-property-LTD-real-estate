@@ -2,7 +2,7 @@ import React from 'react';
 
 const AnimatedHeader = ({ text, classes, style }) => {
   return (
-    <h2 className={'text-[60px] uppercase font-bold ' + classes} style={style}>
+    <h2 className={'text-[50px] uppercase font-bold ' + classes} style={style}>
       {text || 'Heading text'}{' '}
     </h2>
   );

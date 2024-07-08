@@ -5,7 +5,7 @@ const RoundedRiseAnime = ({ totalNumber = 100, label }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const intervalDuration = Math.floor(4000 / totalNumber);
+    const intervalDuration = Math.floor(2000 / totalNumber);
     const interval = setInterval(() => {
       setProgress((prevProgress) =>
         prevProgress < totalNumber ? prevProgress + 1 : totalNumber

@@ -140,7 +140,7 @@ const LeftForm = ({
 
   const handleDeleteProperty = () => {
     const userValidate = prompt(
-      `Please enter "${leftData.heading}" to delete it: `
+      `Please type "${leftData.heading}" below and press 'ok' to delete it: `
     );
 
     if (userValidate === leftData.heading) {
@@ -151,7 +151,9 @@ const LeftForm = ({
         state: true,
       });
       axios
-        .delete(`${reqs.DELETE_PROPERTY}/${leftData.id}`)
+        .delete(`${reqs.DELETE_PROPERTY}/${leftData.id}`, {
+          withCredentials: true,
+        })
         .then((res) => {
           setLoading(false);
           setPopup({

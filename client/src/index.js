@@ -23,6 +23,7 @@ import ContactMsg from './Pages/Admin/ContactMsg.jsx';
 import AdminProperty from './Pages/Admin/AdminProperty.jsx';
 import AdminSmsMail from './Pages/Admin/AdminSmsMail.jsx';
 import AdSingleProperty from './Pages/Admin/AdSingleProperty.jsx';
+import { HelmetProvider } from 'react-helmet-async';
 
 import './axios/global.js';
 import AddProperty from './Pages/Admin/AddProperty.jsx';
@@ -102,6 +103,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <LenisGSAP>
-    <RouterProvider router={router} />
+    <HelmetProvider>
+      <RouterProvider router={router} />
+    </HelmetProvider>
   </LenisGSAP>
 );

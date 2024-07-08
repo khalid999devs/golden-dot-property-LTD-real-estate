@@ -118,7 +118,9 @@ const Navbar = () => {
               classes={`${
                 showNavbar && 'border border-text-main'
               } rounded-full px-2 py-2`}
-              onClick={() => {}}
+              onClick={() => {
+                window.open(`tel:${hotlines[0]}`, '_blank');
+              }}
             />
             <PrimaryButton
               icon={

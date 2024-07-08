@@ -19,6 +19,7 @@ const {
 } = require('../middlewares/clientValidate');
 const clientValidate = require('../middlewares/clientTokenVerify');
 const adminValidate = require('../middlewares/adminTokenVerify');
+const { getDashboardAnalytics } = require('../controllers/Controls');
 
 //get all client data with client
 // router.get('/fullSingle/:username', clientValidate, getClientOnId);
@@ -30,6 +31,7 @@ router.post('/reg', emailValidate, clientRegValidate, registration);
 
 //combined
 router.post('/getAll', adminValidate, getAllClients);
+router.get('/analytics', adminValidate, getDashboardAnalytics);
 // router.post('/login', login);
 
 // router.post('/deleteAcc', clientValidate, deleteClient);

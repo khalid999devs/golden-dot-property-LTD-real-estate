@@ -365,11 +365,16 @@ const deleteProperty = async (req, res) => {
     },
   });
 
-  if (property.img) deleteFile(property.img);
+  if (property.img && typeof property.img === 'string')
+    deleteFile(property.img);
+
   const propertyLocation = property.location
     ? JSON.parse(property.location)
     : {};
-  if (propertyLocation.mapImg) deleteFile(propertyLocation.mapImg);
+
+  if (propertyLocation.mapImg && typeof propertyLocation.mapImg === 'string')
+    deleteFile(propertyLocation.mapImg);
+
   const galleryImgs = property.galleryImgs
     ? JSON.parse(property.galleryImgs)
     : [];

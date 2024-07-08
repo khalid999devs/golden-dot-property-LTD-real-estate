@@ -10,6 +10,7 @@ import LocationInfo from '../Components/Properties/SingleProperty/LocationInfo';
 import FinalButtons from '../Components/Properties/SingleProperty/FinalButtons';
 import FloatingActionBtn from '../Components/Properties/SingleProperty/FloatingActionBtn';
 import reqs from '../Assets/requests';
+import { Helmet } from 'react-helmet-async';
 
 const SingleProperty = () => {
   const { propName } = useParams();
@@ -127,6 +128,33 @@ const SingleProperty = () => {
 
   return (
     <div className='min-h-[100vh]'>
+      {/* SEO optimization */}
+      <Helmet>
+        {/* Open Graph (OG) meta tags */}
+        <meta
+          property='og:title'
+          content={propertyData.heading + ' | Golden Dot Properties LTD.'}
+        />
+        <meta property='og:description' content={propertyData.subText} />
+        <meta property='og:url' content={`/property/${propertyData.value}`} />
+        <meta property='og:image' content={propertyData.img} />
+        <meta property='og:type' content='website' />
+
+        {/* Twitter meta tags */}
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta
+          name='twitter:title'
+          content={propertyData.heading + ' | Golden Dot Properties LTD.'}
+        />
+        <meta name='twitter:description' content={propertyData.subText} />
+        <meta name='twitter:image' content={propertyData.img} />
+
+        {/* page metas */}
+        <title>{propertyData.heading + ' | Golden Dot Properties LTD.'}</title>
+        <meta name='description' content={propertyData.subText} />
+        <link rel='canonical' href={`/property/${propertyData.value}`} />
+      </Helmet>
+
       <SinglePropBanner
         img={propertyData.img}
         virtualTourVideo={propertyData.virtualTourVideo}

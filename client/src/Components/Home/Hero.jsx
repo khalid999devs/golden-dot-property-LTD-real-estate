@@ -165,17 +165,11 @@ const Hero = () => {
       <div className='overlay z-[1]'></div>
       <div className='slider'>
         <div className='slide-active'>
-          <img
-            src='https://images.pexels.com/photos/392031/pexels-photo-392031.jpeg?auto=compress&cs=tinysrgb&w=600'
-            alt=''
-          />
+          <img src='/Images/slider/seven.jpeg' alt='' />
         </div>
         <div className='slide-next'>
           <div className='slide-next-img'>
-            <img
-              src='https://images.pexels.com/photos/8159/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600'
-              alt=''
-            />
+            <img src='/Images/slider/eight.jpeg' alt='' />
           </div>
         </div>
       </div>

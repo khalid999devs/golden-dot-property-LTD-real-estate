@@ -1,13 +1,13 @@
 import React from 'react';
 
-const PersonCard = ({ name, designation, pic }) => {
+const PersonCard = ({ name, designation, pic, otherInfos }) => {
   return (
-    <div className='w-[280px] h-[360px] sm:w-[220px] sm:h-[300px] '>
+    <div className='w-[280px] h-[360px] sm:w-[220px] sm:h-[300px] cursor-pointer transition-all duration-500 group'>
       <div className='w-full h-[85%] bg-primary-light p-2 border border-secondary-main'>
         <img
           src={pic}
           alt=''
-          className='h-[99%] mx-auto w-[99%] object-cover'
+          className='h-[99%] mx-auto w-[99%] object-fill transition-all duration-1000 group-hover:scale-105'
         />
       </div>
       <div className='py-1.5 text-center'>

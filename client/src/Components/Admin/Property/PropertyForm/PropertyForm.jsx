@@ -5,8 +5,10 @@ import Alert from '../../../Utils/Alert';
 import axios from 'axios';
 import reqs from '../../../../Assets/requests';
 import Popup from '../../../Utils/Popup';
+import { useNavigate } from 'react-router-dom';
 
 const PropertyForm = ({ data }) => {
+  const navigate = useNavigate();
   const [rightData, setRightData] = useState({
     img: {},
     galleryImgs: [],
@@ -19,6 +21,7 @@ const PropertyForm = ({ data }) => {
     text: '',
     state: false,
     type: 'normal',
+    onClose: () => {},
   });
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +62,8 @@ const PropertyForm = ({ data }) => {
       });
       return;
     }
-    if (!rightData.img) {
+
+    if (!rightData.img.name) {
       setAlert({
         text: `A Property banner must be provided`,
         type: 'warning',
@@ -118,6 +122,9 @@ const PropertyForm = ({ data }) => {
           text: res.data.msg,
           type: 'success',
           state: true,
+          onClose: () => {
+            navigate('/admin/properties');
+          },
         });
       })
       .catch((err) => {
@@ -225,6 +232,7 @@ const PropertyForm = ({ data }) => {
         state={popup.state}
         setPopup={setPopup}
         loading={loading}
+        onClose={popup.onClose}
       />
     </div>
   );
