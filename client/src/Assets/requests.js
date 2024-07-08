@@ -1,4 +1,5 @@
 const so = 'http://localhost:8000';
+// const so = 'https://api.goldendotbd.com';
 
 export const reqFileWrapper = (src) => {
   if (!src) return null;

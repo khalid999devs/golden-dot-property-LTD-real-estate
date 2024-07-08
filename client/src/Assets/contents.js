@@ -49,15 +49,15 @@ export const cardInfos = [
 
 export const aboutCards = [
   {
-    name: 'Liakat Hossain Sumon',
-    designation: 'Managing Director',
-    pic: '/Images/about/Sumon.jpg',
-    otherInfos: {},
-  },
-  {
     name: 'Md Rafiqul Islam',
     designation: 'Chairman',
     pic: '/Images/about/Rafiq.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Liakat Hossain Sumon',
+    designation: 'Managing Director',
+    pic: '/Images/about/Sumon.jpg',
     otherInfos: {},
   },
   {
@@ -66,22 +66,22 @@ export const aboutCards = [
     pic: '/Images/about/Kamrul.jpg',
     otherInfos: {},
   },
-  {
-    name: 'Executive Name',
-    designation: 'Executive Director',
-    pic: '/Images/about/Rafiq.jpg',
-    otherInfos: {},
-  },
-  {
-    name: 'Executive Name',
-    designation: 'Executive Director',
-    pic: '/Images/about/Rafiq.jpg',
-    otherInfos: {},
-  },
-  {
-    name: 'Executive Name',
-    designation: 'Executive Director',
-    pic: '/Images/about/Rafiq.jpg',
-    otherInfos: {},
-  },
+  // {
+  //   name: 'Executive Name',
+  //   designation: 'Executive Director',
+  //   pic: '/Images/about/Rafiq.jpg',
+  //   otherInfos: {},
+  // },
+  // {
+  //   name: 'Executive Name',
+  //   designation: 'Executive Director',
+  //   pic: '/Images/about/Rafiq.jpg',
+  //   otherInfos: {},
+  // },
+  // {
+  //   name: 'Executive Name',
+  //   designation: 'Executive Director',
+  //   pic: '/Images/about/Rafiq.jpg',
+  //   otherInfos: {},
+  // },
 ];
