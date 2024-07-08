@@ -18,9 +18,9 @@ const registration = async (req, res) => {
   const newClient = await clients.create(req.user);
   await clientproperties.create({ ...req.property, clientId: newClient.id });
 
-  mailer({ client: newClient, property: req.property }, 'booking').catch(
+  await mailer({ client: newClient, property: req.property }, 'booking').catch(
     (err) => {
-      // console.log(err)
+      console.log(err);
     }
   );
 
