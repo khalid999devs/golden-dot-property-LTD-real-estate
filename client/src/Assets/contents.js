@@ -63,25 +63,25 @@ export const aboutCards = [
   {
     name: 'Md Kamrul Islam',
     designation: 'Director',
-    pic: '/Images/about/Kamrul.jpg',
+    pic: '/Images/about/kamrul.png',
     otherInfos: {},
   },
-  // {
-  //   name: 'Executive Name',
-  //   designation: 'Executive Director',
-  //   pic: '/Images/about/Rafiq.jpg',
-  //   otherInfos: {},
-  // },
-  // {
-  //   name: 'Executive Name',
-  //   designation: 'Executive Director',
-  //   pic: '/Images/about/Rafiq.jpg',
-  //   otherInfos: {},
-  // },
-  // {
-  //   name: 'Executive Name',
-  //   designation: 'Executive Director',
-  //   pic: '/Images/about/Rafiq.jpg',
-  //   otherInfos: {},
-  // },
+  {
+    name: 'Wahida Hossain',
+    designation: 'Executive Director',
+    pic: '/Images/about/mami.png',
+    otherInfos: {},
+  },
+  {
+    name: 'Shamima Akhter Jui',
+    designation: 'Executive Director',
+    pic: '/Images/about/jui.jpg',
+    otherInfos: {},
+  },
+  {
+    name: 'Mowshumi Akter Popy',
+    designation: 'Executive Director',
+    pic: '/Images/about/popy.png',
+    otherInfos: {},
+  },
 ];

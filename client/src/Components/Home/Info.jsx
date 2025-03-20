@@ -19,13 +19,13 @@ const Info = () => {
       </div>
       <div className='max-w-2xl m-auto '>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil sunt
-          non aut! Sunt quaerat, error rem a quos vero consequatur laudantium
-          magnam cumque? Omnis, ipsum saepe? Ullam accusantium exercitationem,
-          consectetur amet, explicabo soluta cumque quod eaque illo, quae modi
-          architecto. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-          Facilis sit unde aspernatur reiciendis quos temporibus harum esse
-          there cipato.
+          Golden Dot Properties LTD is a trusted real estate company dedicated
+          to offering high-quality residential options at competitive prices.
+          Our portfolio includes a range of apartment projects and land shares,
+          all situated in the desirable Basundhara Riverview and South
+          Keraniganj areas of Dhaka. With a commitment to excellence and
+          customer satisfaction, we provide affordable solutions for individuals
+          and families looking to invest in their dream homes.
         </p>
       </div>
     </div>

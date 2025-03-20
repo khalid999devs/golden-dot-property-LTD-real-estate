@@ -38,7 +38,7 @@ const EmailCover = (body) => {
                 <p style="margin: 5px 0; font-size: 12px;">+8801716-933161</p>
                 <p style="margin: 5px 0; font-size: 12px;">+8801715-297257</p>
                 <p style="margin: 5px 0; font-size: 12px;">Email: <a href="mailto:goldendotpbl@gmail.com" style="color: #005246;">goldendotpbl@gmail.com</a></p>
-                <p style="margin: 10px 0; font-size: 12px;">Address: 123 Golden Street, Property City, PC 12345</p>
+                <p style="margin: 10px 0; font-size: 12px;">House no-9 (Rab Mansion), Rajjab Ali Sardar Road,<br/> (Old-7/5B, Medical Road) Jurain, Dhaka-1204.</p>
                 <div style="margin: 10px 0;">
                     <a href="https://www.facebook.com/profile.php?id=61551261113608" style="margin: 0 5px; color: #3A1500;"><img src="https://img.icons8.com/ios-filled/24/3A1500/facebook.png" alt="Facebook"/></a>
                     <a href="https://www.youtube.com/@gdpblbd" style="margin: 0 5px; color: #3A1500;"><img src="https://img.icons8.com/ios-filled/24/3A1500/youtube-play.png" alt="YouTube"/></a>
@@ -91,7 +91,7 @@ const EmailTextCover = (text) => {
                 <p style="margin: 5px 0; font-size: 12px;">+8801716-933161</p>
                 <p style="margin: 5px 0; font-size: 12px;">+8801715-297257</p>
                 <p style="margin: 5px 0; font-size: 12px;">Email: <a href="mailto:goldendotpbl@gmail.com" style="color: #005246;">goldendotpbl@gmail.com</a></p>
-                <p style="margin: 10px 0; font-size: 12px;">Address: 123 Golden Street, Property City, PC 12345</p>
+                <p style="margin: 10px 0; font-size: 12px;">House no-9 (Rab Mansion), Rajjab Ali Sardar Road,<br/> (Old-7/5B, Medical Road) Jurain, Dhaka-1204.</p>
                 <div style="margin: 10px 0;">
                     <a href="https://www.facebook.com/profile.php?id=61551261113608" style="margin: 0 5px; color: #3A1500;"><img src="https://img.icons8.com/ios-filled/24/3A1500/youtube.png" alt="Facebook"/></a>
                     <a href="https://www.youtube.com/@gdpblbd" style="margin: 0 5px; color: #3A1500;"><img src="https://img.icons8.com/ios-filled/24/3A1500/youtube-play.png" alt="YouTube"/></a>
